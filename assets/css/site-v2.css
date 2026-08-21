@@ -1,0 +1,38 @@
+/* Site Architecture v2 additions */
+
+@media (max-width: 920px) {
+  .header-inner {
+    flex-wrap: wrap;
+    padding: 10px 0 12px;
+  }
+
+  .site-nav {
+    width: 100%;
+    order: 3;
+    gap: 18px;
+    overflow-x: auto;
+    padding: 4px 0 2px;
+    scrollbar-width: thin;
+  }
+
+  .site-nav a:not(.nav-cta) {
+    display: inline-block;
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  .site-nav .nav-cta {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 640px) {
+  .header-inner {
+    gap: 10px;
+  }
+
+  .site-nav {
+    gap: 16px;
+  }
+}
