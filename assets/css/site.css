@@ -803,3 +803,25 @@ h3 {
     padding: 24px 0;
   }
 }
+
+/* Light-section readability */
+.section-light .section-heading > p:last-child {
+  color: #3d4b5c;
+}
+
+.section-light .feature-card {
+  border-color: var(--line-dark);
+  background: rgba(8, 17, 31, 0.025);
+}
+
+.section-light .feature-card h3 {
+  color: var(--ink);
+}
+
+.section-light .feature-card p {
+  color: #344255;
+}
+
+.section-light .card-index {
+  color: #8b642a;
+}
