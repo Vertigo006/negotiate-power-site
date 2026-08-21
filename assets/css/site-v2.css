@@ -1,5 +1,9 @@
 /* Site Architecture v2 additions */
 
+.section-light .eyebrow {
+  color: #755827;
+}
+
 @media (max-width: 920px) {
   .header-inner {
     flex-wrap: wrap;
