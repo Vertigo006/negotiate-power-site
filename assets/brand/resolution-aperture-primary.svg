@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000">
+<metadata>
+  Canonical mark: Resolution Aperture
+  Brand: Atlas / Negotiate Power
+  Principle: The A is discovered, not drawn.
+  Geometry version: RA-1.0
+</metadata>
+<rect width="1000" height="1000" fill="#FFFFFF"/>
+<!-- Outer aperture: two unresolved structures separated by the crown gap -->
+<path d="M160 210 L445 20 L445 315 L335 515 L160 860 Z" fill="#000000"/>
+<path d="M555 20 L840 210 L840 860 L665 515 L555 315 Z" fill="#000000"/>
+<!-- Nested resolution structure -->
+<path d="M330 860 L500 525 L670 860 L585 860 L500 685 L415 860 Z" fill="#000000"/>
+<!-- Final inner aperture / resolved decision -->
+<path d="M405 860 L500 680 L595 860 L500 805 Z" fill="#666666"/>
+</svg>
