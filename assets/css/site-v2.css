@@ -17,6 +17,43 @@
   color: var(--muted-dark);
 }
 
+.atlas-brand-statement {
+  display: inline-block;
+  margin: 18px 0 0;
+  padding: 10px 14px;
+  border-left: 3px solid #d5b06f;
+  background: rgba(255, 255, 255, 0.055);
+  color: #e7edf3;
+  font-size: 0.98rem;
+  font-weight: 750;
+  letter-spacing: 0.015em;
+}
+
+.atlas-context-line {
+  margin: 22px 0 0;
+  color: var(--muted);
+  font-size: 0.96rem;
+  font-weight: 700;
+}
+
+.atlas-context-line a {
+  color: inherit;
+  text-decoration-color: rgba(213, 176, 111, 0.7);
+  text-underline-offset: 3px;
+}
+
+.section-light .atlas-context-line,
+.article-body .atlas-context-line,
+.contact-section .atlas-context-line {
+  color: #536173;
+}
+
+.article-next .atlas-context-line {
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line-dark);
+}
+
 .start-panel {
   margin-top: 36px;
 }
@@ -187,5 +224,9 @@
 
   .article-content {
     padding: 64px 0 76px;
+  }
+
+  .atlas-brand-statement {
+    font-size: 0.92rem;
   }
 }
