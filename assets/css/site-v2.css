@@ -30,6 +30,121 @@
   margin-top: 6px;
 }
 
+.article-hero {
+  padding: 96px 0 58px;
+}
+
+.article-shell {
+  width: min(calc(100% - 40px), 860px);
+  margin-inline: auto;
+}
+
+.article-hero h1 {
+  max-width: 940px;
+  font-size: clamp(3rem, 6vw, 5.8rem);
+}
+
+.article-deck {
+  max-width: 780px;
+  color: #c5ced8;
+  font-size: 1.18rem;
+}
+
+.article-meta {
+  margin-top: 24px;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.article-body {
+  color: var(--ink);
+  background: var(--paper-bright);
+}
+
+.article-content {
+  padding: 82px 0 94px;
+}
+
+.article-content h2 {
+  margin-top: 58px;
+  margin-bottom: 18px;
+  font-size: clamp(2rem, 4vw, 3.25rem);
+}
+
+.article-content h3 {
+  margin-top: 36px;
+}
+
+.article-content p,
+.article-content li {
+  color: #344255;
+  font-size: 1.04rem;
+}
+
+.article-content a {
+  color: #755827;
+  font-weight: 700;
+}
+
+.article-content ul,
+.article-content ol {
+  padding-left: 24px;
+}
+
+.article-content li + li {
+  margin-top: 8px;
+}
+
+.article-callout {
+  margin: 36px 0;
+  padding: 26px 28px;
+  border-left: 4px solid var(--gold-deep);
+  background: #f2ecdf;
+}
+
+.article-callout p:last-child {
+  margin-bottom: 0;
+}
+
+.article-table-wrap {
+  margin: 34px 0;
+  overflow-x: auto;
+}
+
+.article-table {
+  width: 100%;
+  min-width: 700px;
+  border-collapse: collapse;
+  font-size: 0.94rem;
+}
+
+.article-table th,
+.article-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line-dark);
+  text-align: left;
+  vertical-align: top;
+}
+
+.article-table th {
+  background: #f2ecdf;
+  color: var(--ink);
+}
+
+.article-sources {
+  margin-top: 58px;
+  padding-top: 30px;
+  border-top: 1px solid var(--line-dark);
+}
+
+.article-next {
+  margin-top: 58px;
+  padding: 30px;
+  border: 1px solid var(--line-dark);
+  border-radius: 8px;
+  background: rgba(8, 17, 31, 0.025);
+}
+
 @media (max-width: 920px) {
   .header-inner {
     flex-wrap: wrap;
@@ -64,5 +179,13 @@
 
   .site-nav {
     gap: 16px;
+  }
+
+  .article-shell {
+    width: min(calc(100% - 28px), 860px);
+  }
+
+  .article-content {
+    padding: 64px 0 76px;
   }
 }
