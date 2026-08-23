@@ -119,6 +119,102 @@
   border-top: 1px solid var(--line-dark);
 }
 
+/* Homepage conversion compression */
+.proof-links a,
+.proof-links span {
+  padding: 18px 28px;
+  color: var(--muted);
+  font-size: 0.77rem;
+  font-weight: 750;
+  letter-spacing: 0.16em;
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.proof-links a:hover {
+  color: var(--gold);
+}
+
+.proof-links a + span,
+.proof-links span + span {
+  border-left: 1px solid var(--line);
+}
+
+.problem-signals {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.problem-signals span {
+  padding: 12px 14px;
+  border: 1px solid var(--line-dark);
+  border-radius: 5px;
+  color: #344255;
+  background: rgba(255,255,255,0.28);
+  font-size: 0.9rem;
+  font-weight: 750;
+}
+
+.compact-heading {
+  margin-bottom: 34px;
+}
+
+.resolution-flow {
+  display: grid;
+  grid-template-columns: repeat(9, auto);
+  align-items: center;
+  justify-content: start;
+  gap: 14px;
+  padding: 22px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  color: #dce2e8;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.resolution-flow i {
+  color: var(--gold);
+  font-style: normal;
+}
+
+.resolution-flow strong {
+  color: var(--gold);
+}
+
+.summary-actions {
+  margin-top: 28px;
+}
+
+.commercial-card-grid .feature-card {
+  min-height: 245px;
+}
+
+.commercial-card .card-index {
+  margin-bottom: 36px;
+}
+
+.price-line {
+  margin-bottom: 10px !important;
+  color: var(--ink) !important;
+  font-weight: 850;
+}
+
+.dark-actions .button:not(.button-primary) {
+  border-color: var(--line-dark);
+  color: var(--ink);
+  background: transparent;
+}
+
+.dark-actions .button:not(.button-primary):hover {
+  border-color: rgba(8,17,31,.42);
+}
+
 .start-panel {
   margin-top: 36px;
 }
@@ -272,6 +368,16 @@
     flex: 0 0 auto;
     white-space: nowrap;
   }
+
+  .resolution-flow {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .resolution-flow i {
+    transform: rotate(90deg);
+    justify-self: start;
+  }
 }
 
 @media (max-width: 640px) {
@@ -295,6 +401,10 @@
 
   .brand-name::after {
     display: none;
+  }
+
+  .problem-signals {
+    grid-template-columns: 1fr;
   }
 
   .article-shell {
