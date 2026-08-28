@@ -1,0 +1,217 @@
+/* Mobile Normalization v1
+   Purpose: keep the desktop information hierarchy intact while normalizing tablet/phone spacing,
+   CTAs, Samples, cards, and footer behavior across the five primary public pages.
+   Breakpoints: compact/tablet <= 920px; phone <= 640px. */
+
+@media (max-width: 920px) {
+  .hero.section.section-major,
+  .sample-hero,
+  .article-hero {
+    padding-top: 88px;
+    padding-bottom: 54px;
+  }
+
+  .hero-grid,
+  .split-layout,
+  .engine-panel,
+  .audience-layout,
+  .principles-layout {
+    gap: 42px;
+  }
+
+  .card-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .feature-card,
+  .commercial-card-grid .feature-card {
+    min-height: 0;
+    padding: 26px;
+  }
+
+  .card-index,
+  .commercial-card .card-index {
+    margin-bottom: 28px;
+  }
+
+  .sample-hero {
+    padding-inline: 0;
+  }
+
+  .sample-stack {
+    gap: 40px;
+    padding-bottom: 76px;
+  }
+
+  .sample-shell {
+    padding: 26px;
+  }
+
+  .sample-label {
+    align-items: flex-start;
+  }
+
+  .sample-actions,
+  .hero-actions {
+    align-items: stretch;
+  }
+
+  .sample-actions .button,
+  .hero-actions .button {
+    flex: 1 1 220px;
+  }
+
+  .doc-head,
+  .doc-body {
+    padding: 26px;
+  }
+
+  .mini-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tail-row {
+    grid-template-columns: minmax(120px, 150px) 1fr;
+  }
+
+  .footer-inner {
+    min-height: 92px;
+  }
+}
+
+@media (max-width: 640px) {
+  .shell {
+    width: min(calc(100% - 28px), var(--max-width));
+  }
+
+  .hero.section.section-major,
+  .sample-hero,
+  .article-hero {
+    padding-top: 66px;
+    padding-bottom: 42px;
+  }
+
+  .section-major,
+  .section-standard,
+  .section-compact {
+    padding-block: 56px;
+  }
+
+  .hero-lede,
+  .sample-note,
+  .article-deck,
+  .prose,
+  .section-heading > p:last-child {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .hero-actions,
+  .sample-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .hero-actions .button,
+  .sample-actions .button {
+    width: 100%;
+    min-height: 50px;
+  }
+
+  .feature-card,
+  .commercial-card-grid .feature-card {
+    padding: 22px;
+  }
+
+  .card-index,
+  .commercial-card .card-index {
+    margin-bottom: 20px;
+  }
+
+  .sample-stack {
+    gap: 30px;
+    padding-bottom: 60px;
+  }
+
+  .sample-shell {
+    padding: 18px;
+    border-radius: 9px;
+  }
+
+  .sample-label {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 5px;
+    margin-bottom: 18px;
+  }
+
+  .sample-label span,
+  .sample-label strong {
+    overflow-wrap: anywhere;
+  }
+
+  .doc-head,
+  .doc-body {
+    padding: 18px;
+  }
+
+  .confidence {
+    width: fit-content;
+  }
+
+  .mini-card,
+  .tail-panel,
+  .decision-callout {
+    padding: 16px;
+  }
+
+  .tail-row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .matrix-wrap,
+  .article-table-wrap {
+    margin-inline: -4px;
+    padding-bottom: 6px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .proof-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .proof-links a,
+  .proof-links span,
+  .proof-strip span {
+    padding: 14px 12px;
+  }
+
+  .proof-links a + span,
+  .proof-links span + span,
+  .proof-strip span + span {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .atlas-brand-statement,
+  .atlas-context-line {
+    align-items: flex-start;
+  }
+
+  .footer-inner {
+    min-height: 0;
+    padding: 30px 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .footer-inner nav {
+    flex-wrap: wrap;
+    gap: 12px 20px;
+  }
+}
