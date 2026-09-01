@@ -1,4 +1,12 @@
 (() => {
+  const styleHref = '/assets/css/decision-room-mvp.css';
+  if (!document.querySelector(`link[href="${styleHref}"]`)) {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = styleHref;
+    document.head.appendChild(link);
+  }
+
   const source = '/assets/data/decision-room-demo-case-d01.json';
 
   const setText = (selector, value) => {
