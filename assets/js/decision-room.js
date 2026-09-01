@@ -10,13 +10,14 @@
   const source = '/assets/data/decision-room-demo-case-d01.json';
 
   const setText = (selector, value) => {
-    const node = document.querySelector(selector);
-    if (node && value !== undefined && value !== null) node.textContent = value;
+    if (value === undefined || value === null) return;
+    document.querySelectorAll(selector).forEach((node) => {
+      node.textContent = value;
+    });
   };
 
   const setStatus = (status) => {
-    const node = document.querySelector('[data-field="asset-load-state"]');
-    if (node) node.textContent = status;
+    setText('[data-field="asset-load-state"]', status);
   };
 
   fetch(source, { cache: 'no-store' })
@@ -50,8 +51,8 @@
       document.documentElement.dataset.decisionAsset = asset.asset_id;
     })
     .catch(() => {
-      // The page contains a complete, accessible static fallback. Failure to load the
-      // enhancement never hides the governed decision or replaces it with defaults.
+      // The HTML preserves the governed decision as a semantic static fallback.
+      // Data-load failure never invents values or hides the decision.
       setStatus('Static governed fallback');
     });
 })();
