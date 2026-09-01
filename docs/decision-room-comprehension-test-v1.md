@@ -1,113 +1,49 @@
-# Atlas Decision Room MVP — 90-Second Comprehension Test v1.0
+# Atlas Decision Room MVP — Verification & Comprehension Protocol v1.1
 
-Status: pre-registered buyer-test protocol. The thresholds below must be fixed before participant testing and must not be relaxed after results are observed without creating a new protocol version.
+Status: pre-registered verification protocol. Thresholds and failure criteria are fixed before participant testing.
 
 ## Purpose
+Verify that the Decision Room is only a governed presentation layer over a canonical Decision Asset and that a first-time sophisticated aviation decision maker can understand the decision in approximately 90 seconds without overreading confidence, laundering evidence, or mistaking a blocked artifact for released advice.
 
-Determine whether a first-time sophisticated aviation decision maker can correctly understand an Atlas Decision Asset faster than a conventional analytical report while preserving uncertainty, evidence traceability, and human authority.
+## Canonical-only invariant
+The UI may select, order, label, format, and progressively disclose canonical fields. It may not independently calculate or infer recommendation, confidence, evidence weight, contradiction disposition, authority state, economic value, Decision Delta, abstention, freshness, or release state. Missing required canonical fields must fail closed rather than generate substitute values.
 
-This test measures comprehension of the customer presentation layer. It does not validate the underlying case methodology, prove commercial value, or establish AIOQ accuracy.
+## 90-second test
+Without a walkthrough, ask: (1) what decision is being evaluated; (2) what Atlas recommends; (3) confidence; (4) why; (5) decisive evidence; (6) material uncertainty/contradiction; (7) what changes the call; (8) next action; (9) who retains authority; (10) whether the displayed record is current/released.
 
-## Test conditions
+Individual pass requires correct Decision Object; AVOID/DEFER; Medium qualitative confidence without conflating coverage; EV-D01-03 as decisive evidence; alternate authority unverified; authoritative cure as change condition; next action; human authority; and recognition that the demo is frozen and release-blocked.
 
-Use the production-equivalent Decision Room build on desktop and mobile. Participant receives no walkthrough of Atlas terminology before the test. Start the timer when the Decision Room becomes visible. Participant may scroll and open disclosures. Do not coach, explain, or answer substantive questions during the timed portion.
+Critical misinterpretations are automatic failures: AIOQ treated as accuracy guarantee; unauthorized revenue flight asserted; ROI/savings invented; blocked artifact treated as released advice; source representation treated as regulator fact; Medium confidence converted into numeric probability; frozen evidence treated as current verification.
 
-Record device, viewport, participant role, prior familiarity with Atlas, start time, first-answer timestamps, final answers, confidence in answers, and any obvious navigation failure.
+Cohort gate: minimum 5 representative aviation decision makers; >=4/5 individual passes; median Decision Object <=20 sec; recommendation <=20 sec; decisive evidence <=60 sec; 5/5 human authority; 5/5 no unsupported economics; 5/5 recognize blocked/frozen status; 5/5 reach provenance within 30 additional seconds.
 
-## Timed questions
+## State test matrix
+### Normal recommendation
+Canonical recommendation is rendered verbatim. No presentation-layer scoring or recomputation.
 
-Ask the participant to answer, in their own words:
+### Abstention
+Inject a test fixture whose canonical recommendation state is `ABSTAIN / INSUFFICIENT BASIS`. Pass only if the primary screen renders abstention explicitly, does not choose an alternative, identifies the canonical evidence gap/change condition, and never derives a recommendation from evidence cards.
 
-1. What decision is being evaluated?
-2. What does Atlas recommend?
-3. How confident is Atlas in the decision recommendation?
-4. What evidence matters most?
-5. What does Atlas not know or what remains unresolved?
-6. What could change the recommendation?
-7. What is the economic exposure?
-8. What action should happen next?
-9. Who retains decision authority?
+### Low confidence
+Inject a fixture with canonical qualitative confidence `Low`. Pass only if `Low` is displayed verbatim, no numeric probability or five-step pseudo-score is generated, limiting evidence is visible, and coverage remains separately labeled.
 
-After the 90-second mark, ask the participant to locate the decisive claim, its supporting evidence ID, and the provenance/source class.
+### Human release blocked
+Inject `RELEASE BLOCKED`. Pass only if blocked state is visible before deep drilldown and the interface does not frame the recommendation as released customer advice.
 
-## Pre-registered pass thresholds
+### Stale/frozen data
+Inject a frozen/stale freshness state and cutoff. Pass only if the cutoff and warning are visible on the primary screen and the page does not imply current verification.
 
-### Individual participant
+### Missing canonical field
+Remove each required primary-screen field in turn. Pass only if the data binding fails closed and does not invent a replacement value.
 
-A participant passes the 90-second comprehension test only if, within 90 seconds, they correctly identify all of the following critical fields:
+## Evidence/provenance Red Team
+Attempt to make a participant: confuse first-party representation with authoritative fact; infer unauthorized flight; treat source count as confidence; treat evidence coverage as recommendation confidence; miss the strongest contrary evidence. Any systematic confusion is a material defect.
 
-- Decision Object: proceed with the opportunity as represented given the authority evidence.
-- Recommendation: AVOID / DEFER; do not accept as presently represented.
-- Decision confidence: Medium, without describing evidence coverage as the same thing.
-- Decisive evidence: the regulator-originated certificate-status record / EV-D01-03.
-- Material uncertainty: whether a different valid authority structure could cover the contemplated employment/flying remains unverified.
-- Next action: obtain authoritative evidence of valid applicable authority before commitment.
-- Human authority: the customer/human decision maker retains authority; Atlas does not autonomously decide.
+## Accessibility verification
+Desktop keyboard: skip link; menu; section links; every details/summary control; visible focus. Mobile: 430/390/375/320 CSS px; no page-level horizontal overflow; evidence wraps; section navigation remains usable; interactive targets approximately >=44px. Screen-reader structure: one h1; logical h2/h3; main/nav landmarks; live load status; text labels for states; decorative arrows/icons hidden. Contrast: verify normal text, muted/provenance text, state labels, focus indicator, and warning treatment against WCAG AA targets using computed production colors. Forced-colors and reduced-motion behavior must remain usable.
 
-The participant must also avoid each critical misinterpretation:
-
-- treating AIOQ qualification as a guarantee that the case is correct;
-- stating that Atlas proved an unauthorized revenue flight occurred;
-- inventing a dollar ROI, savings figure, or avoided loss;
-- stating that the release-blocked qualification artifact was a customer-authorized final decision;
-- treating recommendation adoption or a future favorable outcome as proof of causation.
-
-### Cohort gate for real buyer testing
-
-Minimum initial cohort: 5 qualified or representative aviation decision makers.
-
-MVP passes the initial buyer-test gate when:
-
-- at least 4 of 5 participants pass the individual 90-second critical-field test;
-- median time to identify the Decision Object is <= 20 seconds;
-- median time to identify the recommendation is <= 20 seconds;
-- median time to identify the decisive evidence is <= 60 seconds;
-- at least 4 of 5 correctly distinguish decision confidence from evidence coverage;
-- at least 4 of 5 identify a material unknown without prompting;
-- 5 of 5 identify that human/customer authority is retained;
-- 5 of 5 avoid unsupported economic interpretation;
-- 5 of 5 can reach the decisive evidence provenance within 30 additional seconds after the 90-second comprehension period;
-- no participant encounters a blocking keyboard, mobile, contrast, or disclosure-control failure.
-
-Failure of the human-authority or unsupported-economic controls is a critical UX failure even if the total comprehension score otherwise passes.
-
-## Accessibility execution checks
-
-Desktop keyboard pass:
-
-- Skip link reaches main content.
-- Menu control is keyboard operable when visible.
-- Sticky section links receive visible focus.
-- Every details/summary disclosure is reachable and operable by keyboard.
-- Focus indicator remains visible at normal and forced-color settings.
-
-Mobile pass:
-
-- 320px CSS viewport minimum without horizontal page overflow.
-- Sticky section navigation may scroll horizontally but does not obscure content.
-- Interactive targets are at least approximately 44px high where applicable.
-- Decision Object, recommendation, confidence, deadline, stage, and next action are available before deep evidence tables/details.
-- Evidence text wraps without clipping.
-
-Screen-reader basics:
-
-- One page-level h1.
-- Logical h2/h3 hierarchy.
-- Main landmark and labeled primary/section navigation.
-- Human-readable status text does not rely on color alone.
-- Evidence state legend includes text labels.
-- Decorative arrows/icons are hidden from assistive technology where appropriate.
-
-## Scoring record
-
-For each participant capture: participant ID; role; device; viewport; prior Atlas familiarity; Decision Object time/correct; recommendation time/correct; confidence correct; evidence time/correct; unknown correct; change trigger correct; economics correct; next action correct; human authority correct; provenance drill-down time/correct; critical misinterpretations; accessibility/navigation defects; qualitative comments.
+## Runtime requirement
+Source inspection is not sufficient for production release. Execute the protocol against a production-equivalent served build in at least one Chromium-class browser and one WebKit-class/mobile browser. Record viewport, browser, failures, screenshots where useful, and exact commit SHA.
 
 ## Decision rule
-
-PASS — eligible for real buyer testing: cohort thresholds satisfied with no critical UX failure.
-
-PASS WITH REMEDIATION: comprehension thresholds satisfied but non-critical usability/accessibility defects require correction before broader testing.
-
-FAIL: critical-field comprehension threshold missed, human authority misunderstood, economic false precision induced, evidence provenance cannot be located, or blocking mobile/accessibility defect occurs.
-
-No threshold may be reinterpreted after results simply to preserve a PASS. A revised threshold requires v1.1+ and must state why the original test was inadequate.
+PASS: cohort and runtime gates pass with no critical UX/accessibility failure. PASS WITH REMEDIATION: comprehension passes but noncritical defects remain. FAIL: primary comprehension misses, provenance cannot be reached, confidence/coverage are confused systematically, blocked/frozen status is missed, unsupported economics are induced, or a blocking keyboard/mobile/screen-reader/contrast defect occurs.
