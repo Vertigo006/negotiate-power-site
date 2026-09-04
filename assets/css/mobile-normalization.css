@@ -3,6 +3,16 @@
    CTAs, Samples, cards, and footer behavior across the five primary public pages.
    Breakpoints: compact/tablet <= 920px; phone <= 640px. */
 
+.samples-page .sample-shell,
+.samples-page .document-preview,
+.samples-page .doc-head,
+.samples-page .doc-body,
+.samples-page .sample-state-grid,
+.samples-page .mini-grid,
+.samples-page .tail-panel {
+  min-width: 0;
+}
+
 @media (max-width: 920px) {
   .hero.section.section-major,
   .sample-hero,
@@ -80,6 +90,83 @@
   }
 }
 
+/* The desktop comparison table becomes too wide once the document preview is nested
+   inside tablet/mobile containers. Switch to the semantic vertical comparison before
+   horizontal scrolling becomes necessary. */
+@media (max-width: 768px) {
+  .samples-page .matrix-wrap {
+    display: none;
+  }
+
+  .samples-page .matrix-mobile {
+    display: grid;
+    gap: 12px;
+    margin: 0;
+  }
+
+  .samples-page .matrix-mobile-criterion {
+    overflow: hidden;
+    border: 1px solid rgba(8, 17, 31, 0.14);
+    border-radius: 5px;
+    background: #fbfaf6;
+  }
+
+  .samples-page .matrix-mobile-criterion > dt {
+    padding: 11px 13px;
+    color: #08111f;
+    background: #f2ecdf;
+    font-size: 0.72rem;
+    font-weight: 850;
+    letter-spacing: 0.07em;
+    line-height: 1.35;
+    text-transform: uppercase;
+    overflow-wrap: anywhere;
+  }
+
+  .samples-page .matrix-mobile-criterion > dd {
+    display: grid;
+    margin: 0;
+  }
+
+  .samples-page .matrix-mobile-criterion > dd > span {
+    display: grid;
+    grid-template-columns: minmax(78px, 0.8fr) minmax(0, 1.2fr);
+    gap: 12px;
+    align-items: baseline;
+    padding: 11px 13px;
+    border-top: 1px solid rgba(8, 17, 31, 0.1);
+  }
+
+  .samples-page .matrix-mobile-criterion > dd > span:first-child {
+    border-top: 0;
+  }
+
+  .samples-page .matrix-mobile-criterion > dd > span.preferred {
+    background: rgba(141, 185, 180, 0.14);
+  }
+
+  .samples-page .matrix-mobile-criterion b {
+    color: #243247;
+    font-size: 0.76rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .samples-page .matrix-mobile-criterion em {
+    min-width: 0;
+    color: #536173;
+    font-size: 0.9rem;
+    font-style: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .samples-page .matrix-mobile-criterion .preferred b,
+  .samples-page .matrix-mobile-criterion .preferred em,
+  .samples-page .matrix-mobile-criterion .preferred strong {
+    color: #385f5a;
+  }
+}
+
 @media (max-width: 640px) {
   .shell {
     width: min(calc(100% - 28px), var(--max-width));
@@ -137,7 +224,7 @@
   }
 
   .sample-shell {
-    padding: 18px;
+    padding: 16px;
     border-radius: 9px;
   }
 
@@ -146,6 +233,8 @@
     grid-template-columns: 1fr;
     gap: 5px;
     margin-bottom: 18px;
+    letter-spacing: 0.09em;
+    line-height: 1.45;
   }
 
   .sample-label span,
@@ -153,13 +242,57 @@
     overflow-wrap: anywhere;
   }
 
+  .samples-page .sample-hero h1 {
+    max-width: 100%;
+    font-size: clamp(2.3rem, 10.5vw, 3rem);
+    line-height: 1.04;
+    overflow-wrap: break-word;
+  }
+
+  .samples-page .document-preview {
+    width: 100%;
+  }
+
   .doc-head,
   .doc-body {
     padding: 18px;
   }
 
+  .samples-page .doc-head {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .samples-page .doc-head h2 {
+    max-width: 100%;
+    font-size: clamp(1.45rem, 7vw, 1.85rem);
+    line-height: 1.1;
+    overflow-wrap: break-word;
+  }
+
+  .samples-page .doc-kicker,
+  .samples-page .mini-card span {
+    letter-spacing: 0.1em;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+
   .confidence {
     width: fit-content;
+    max-width: 100%;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+  }
+
+  .samples-page .sample-state-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .samples-page .sample-state-item,
+  .samples-page .sample-state-item strong,
+  .samples-page .sample-state-item span {
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
 
   .mini-card,
@@ -173,11 +306,22 @@
     gap: 4px;
   }
 
+  .samples-page .tail-row strong,
+  .samples-page .tail-row span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
   .matrix-wrap,
   .article-table-wrap {
     margin-inline: -4px;
     padding-bottom: 6px;
     -webkit-overflow-scrolling: touch;
+  }
+
+  .samples-page .matrix-mobile-criterion > dd > span {
+    grid-template-columns: minmax(72px, 0.72fr) minmax(0, 1.28fr);
+    gap: 10px;
   }
 
   .proof-strip {
@@ -213,5 +357,25 @@
   .footer-inner nav {
     flex-wrap: wrap;
     gap: 12px 20px;
+  }
+}
+
+@media (max-width: 360px) {
+  .samples-page .sample-shell {
+    padding: 12px;
+  }
+
+  .samples-page .doc-head,
+  .samples-page .doc-body {
+    padding: 15px;
+  }
+
+  .samples-page .sample-state-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .samples-page .matrix-mobile-criterion > dd > span {
+    grid-template-columns: 1fr;
+    gap: 2px;
   }
 }
