@@ -1,0 +1,79 @@
+{
+  "schema_version": "decision-room-view.v1.1",
+  "view_type": "CANONICAL_DERIVED_PRESENTATION",
+  "asset_id": "DA-DEMO-D01",
+  "case_id": "CASE-D01",
+  "record_version": "CASE-D01 controlled run 01",
+  "decision_object": {
+    "decision_statement": "Should the candidate proceed with a turbine pilot opportunity as presently represented, given the operating-authority evidence in the frozen record?",
+    "decision_owner": "Candidate / human decision maker",
+    "decision_deadline": "Offer expires in 48 hours",
+    "decision_stage": "Pre-acceptance / pre-training",
+    "evidence_cutoff": "2026-06-30",
+    "freshness_state": "FROZEN QUALIFICATION RECORD",
+    "freshness_warning": "Evidence is frozen at 30 Jun 2026. Do not treat this demonstration as a current verification of any real operator, certificate, person, or authority state."
+  },
+  "recommendation": {
+    "state": "AVOID / DEFER",
+    "plain_language": "Do not accept the position as presently represented.",
+    "nearest_alternative": "Defer commitment and require authoritative evidence of a valid, applicable operating-authority structure.",
+    "next_action": "Obtain authoritative evidence that the contemplated employment and flying are covered by valid operating authority before accepting or beginning training.",
+    "change_condition": "Authoritative evidence establishing a valid, applicable operating-authority structure for the contemplated employment and flying."
+  },
+  "confidence_architecture": {
+    "decision_confidence": "Medium",
+    "confidence_mode": "QUALITATIVE",
+    "evidence_coverage": "C — usable with important gaps",
+    "decisive_claim_confidence": "High",
+    "explanation": "Decision-critical authority evidence is strong, while broader case coverage remains incomplete. Confidence and coverage are not the same measure.",
+    "low_confidence_behavior": "If decision confidence is Low, the primary screen must state Low explicitly, suppress any visual treatment that implies numeric precision, identify the evidence gap, and present the next information-acquisition action or abstention condition."
+  },
+  "authority_state": {
+    "state": "ADVERSE / FAILED",
+    "release_state": "ROLE UNASSIGNED — RELEASE BLOCKED",
+    "human_review": "MANDATORY",
+    "customer_meaning": "This qualification artifact was not authorized for customer release. A production Decision Room must not present a blocked recommendation as released advice."
+  },
+  "economic_exposure": {
+    "state": "QUANTIFICATION NOT SUPPORTED",
+    "display": "Economic exposure is material but not responsibly quantifiable from the frozen record.",
+    "limitations": "The packet includes favorable compensation and schedule terms but does not contain sufficient verified economic inputs for a defensible ROI, savings, avoided-loss, or quantified exposure claim."
+  },
+  "alternatives": [
+    {"id":"A","label":"Accept as represented","status":"Do not prefer","rationale":"Favorable compensation, schedule, urgency, and withdrawal flexibility do not cure a critical adverse authority condition."},
+    {"id":"B","label":"Defer pending authoritative cure","status":"Preferred","rationale":"Preserves the opportunity while requiring evidence that can actually change the authority state."},
+    {"id":"C","label":"Decline and move on","status":"Credible alternative","rationale":"Removes the authority uncertainty but may surrender a potentially attractive opportunity that could become supportable if valid authority is established."}
+  ],
+  "decisive_claims": [
+    {"claim_id":"CL-D01-01","claim":"The represented certificate was surrendered effective 2026-05-31 and operations under it were not authorized thereafter.","confidence":"High","evidence_ids":["EV-D01-03"],"statement_type":"SUPPORTED FACT"},
+    {"claim_id":"CL-D01-02","claim":"The frozen record contains no replacement certificate, exemption, temporary authority, stay, regulator correction, or regulator statement curing the represented authority state.","confidence":"High","evidence_ids":["EV-D01-03","EV-D01-04","EV-D01-05","EV-D01-06"],"statement_type":"SUPPORTED RECORD FINDING"},
+    {"claim_id":"CL-D01-03","claim":"The packet does not establish that the named affiliate holds authority applicable to this employment opportunity.","confidence":"High","evidence_ids":["EV-D01-06"],"statement_type":"SUPPORTED RECORD FINDING"}
+  ],
+  "evidence": [
+    {"evidence_id":"EV-D01-03","title":"Regulator-originated certificate-status record","source_class":"Authoritative primary","date":"2026-06-18","provenance":"Controlled primary regulator-originated record; identity and date established within the frozen synthetic packet.","supports":["CL-D01-01","CL-D01-02"],"decision_relevance":"Decisive"},
+    {"evidence_id":"EV-D01-04","title":"Regulator enforcement notice","source_class":"Authoritative primary","date":"2026-06-20","provenance":"Controlled regulator-originated notice addressed to the represented employer.","supports":["CL-D01-02"],"decision_relevance":"High"},
+    {"evidence_id":"EV-D01-05","title":"Recruiter follow-up message","source_class":"Direct first-party representation","date":"2026-06-22","provenance":"Controlled first-party message; admissible as evidence of the representation, not as regulator authority.","supports":[],"opposes":["CL-D01-01","CL-D01-02"],"decision_relevance":"Material contrary evidence"},
+    {"evidence_id":"EV-D01-06","title":"Operations manager affiliate-transition message","source_class":"Direct first-party representation","date":"2026-06-24","provenance":"Controlled first-party message; no accompanying evidence establishes the affiliate as the applicable authority holder for the offer.","supports":["CL-D01-03"],"decision_relevance":"Material"},
+    {"evidence_id":"EV-D01-07","title":"Candidate urgency and favorable employment terms","source_class":"Customer/persona-supplied decision context","date":"2026-06-30 or earlier","provenance":"Controlled synthetic case context.","supports":[],"decision_relevance":"Material but non-curative"}
+  ],
+  "unknowns_and_contradictions": [
+    {"type":"Critical contradiction","state":"Disputed representation / adverse authoritative evidence","statement":"Recruiter and operations-manager representations conflict with the regulator-originated certificate-status record.","disposition":"Authoritative evidence controls the supported authority state."},
+    {"type":"Unknown","state":"Unverified","statement":"Whether a different valid authority structure could lawfully cover the contemplated employment and flying.","disposition":"Requires authoritative evidence before recommendation can change."},
+    {"type":"Not established","state":"Known limitation","statement":"The enforcement notice does not prove that any unauthorized revenue flight actually occurred.","disposition":"Do not infer beyond the record."}
+  ],
+  "falsification": {"status":"Completed","strongest_contrary_case":"The recruiter and operations manager assert that authority remains valid or is transitioning to an affiliate, while the opportunity has favorable terms and is reversible before training.","result":"Does not reverse the recommendation because no authoritative cure is present in the frozen record."},
+  "decision_delta": {"state":"NOT AVAILABLE","reason":"This is a synthetic pre-decision demonstration. No real customer decision or subsequent real-world outcome exists, so no Decision Delta or performance claim is displayed."},
+  "presentation_states": {
+    "abstention": {"supported":true,"label":"ABSTAIN / INSUFFICIENT BASIS","rule":"Use only when the canonical recommendation state is abstention or the governed record says evidence is insufficient. The presentation layer may not derive abstention itself."},
+    "low_confidence": {"supported":true,"label":"Low","rule":"Render the canonical qualitative confidence exactly and explain the limiting evidence; never convert it to a numeric score."},
+    "release_blocked": {"supported":true,"rule":"Display blocked state prominently and do not frame the recommendation as released customer advice."},
+    "stale_data": {"supported":true,"rule":"Display evidence cutoff and a warning whenever the canonical freshness state is frozen, stale, expired, or otherwise not current."}
+  },
+  "governance": {
+    "methodology_context":"AIOQ Phase D controlled qualification case",
+    "methodology_version_display":"Atlas governed methodology — qualification artifact",
+    "record_source":"Preserved CASE-D01 controlled run and frozen synthetic evidence packet",
+    "autonomous_decision_authority":false,
+    "presentation_contract":"The Decision Room may select, order, label, and progressively disclose canonical fields. It may not calculate recommendation, confidence, evidence weight, authority, contradiction disposition, economic value, Decision Delta, or release state."
+  }
+}
