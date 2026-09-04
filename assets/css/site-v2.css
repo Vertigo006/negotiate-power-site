@@ -12,6 +12,14 @@
 @media(max-width:640px){.header-inner{gap:10px}.brand-mark{width:38px;height:38px;flex-basis:38px}.brand-name{font-size:.98rem}.brand-name::after{display:none}.nav-toggle-label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}.problem-signals{grid-template-columns:1fr}.article-shell{width:min(calc(100% - 28px),860px)}.article-content{padding:64px 0 76px}.atlas-brand-statement{font-size:.92rem}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.button,.nav-toggle-icon i{transition:none}}
 
+/* Atlas light-section process-flow contrast */
+.section-light .resolution-flow{color:#344255;border-color:var(--line-dark)}
+.section-light .resolution-flow span{color:#243247;border-color:rgba(8,17,31,.18);background:rgba(8,17,31,.035)}
+.section-light .resolution-flow strong{color:#62481f;border-color:rgba(98,72,31,.42);background:rgba(117,88,39,.1)}
+.section-light .resolution-flow i{color:#755827}
+.section-light .resolution-flow span::before{background:#657283}
+.section-light .resolution-flow strong::before{background:#9a6c2b}
+
 /* UX refinement v1: hierarchy, navigation, product-system credibility */
 .site-nav>a[href="/"]{display:none}.site-nav a[aria-current="page"]{position:relative;color:var(--paper)}.site-nav a[aria-current="page"]::after{content:"";position:absolute;right:0;bottom:-8px;left:0;height:1px;background:var(--gold)}
 body.nav-open{overflow:hidden}.section-major{padding-block:124px}.section-standard{padding-block:92px}.section-compact{padding-block:68px}.hero.section.section-major{padding-top:128px;padding-bottom:66px}
