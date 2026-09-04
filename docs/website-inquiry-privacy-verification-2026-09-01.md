@@ -6,7 +6,7 @@ Verified production repository implementation, current public commercial pages, 
 ## Actual flow
 Visitor → CTA (`mailto:`) → visitor's email client/provider → Microsoft-hosted `contact@negotiatepower.com` mailbox → manual qualification by Negotiate Power → any later evidence transfer/scope process established separately → mailbox/business-record retention until deletion or legitimate retention need.
 
-There is no on-site qualification form, form processor, CRM, payment processor, customer account, analytics SDK, advertising pixel, tag manager, or cookie-consent implementation in the current repository tree.
+There is no on-site qualification form, form processor, CRM, payment processor, customer account, advertising pixel, or cookie-consent implementation in the current repository tree. Google Analytics measurement ID `G-VELTQ6HWJ7` was added on September 4, 2026 and is the only third-party measurement script currently identified.
 
 ## Control classification
 | Control | Status | Evidence / limitation |
@@ -23,10 +23,10 @@ There is no on-site qualification form, form processor, CRM, payment processor, 
 | Inquiry storage | VERIFIED | Email is stored in Microsoft Outlook mailbox folders. |
 | Fixed retention schedule | NOT PRESENT | No published fixed inquiry retention period was found. |
 | Deletion/correction route | VERIFIED | Privacy contact is `contact@negotiatepower.com`; operational fulfillment remains manual. |
-| First-party analytics | NOT PRESENT | No analytics/tag-manager SDK in current tree. |
+| First-party analytics | VERIFIED | Google Analytics tag `G-VELTQ6HWJ7` is present in the public HTML pages. |
 | Advertising/behavioral tracking | NOT PRESENT | No pixel/ad scripts found in current tree. |
-| First-party cookies | NOT PRESENT | Static implementation has no cookie-setting code. Provider/network processing may still occur outside site code. |
-| Third-party client scripts | NOT PRESENT | Current public repository implementation loads local site JS only; JSON-LD is metadata, not executable third-party code. |
+| First-party cookies | PRESENT / PROVIDER-CONTROLLED | Google Analytics may set or read first-party cookies; cookie behavior is controlled by the Google tag configuration and browser/user choices. |
+| Third-party client scripts | VERIFIED | Public HTML loads the Google Analytics `gtag.js` script from `www.googletagmanager.com`; other site JavaScript remains local. |
 | Sensitive-data intake guard | VERIFIED / strengthened | Commercial page now states email is the current path and tells visitors not to attach sensitive evidence initially. |
 | Privacy notice vs implementation | VERIFIED AFTER REMEDIATION | Updated notice now identifies GitHub Pages, Microsoft-hosted mailbox, ordinary email transport, no fixed retention period, and no secure-portal claim. |
 | Current pricing | VERIFIED | $2,500 / $5,000 / $7,500 starting prices on engagements page match current pricing authority. |
@@ -41,6 +41,7 @@ There is no on-site qualification form, form processor, CRM, payment processor, 
 3. There is currently no CRM/lead ledger or deterministic qualification-state workflow in the public stack. This is not a privacy defect, but it creates operational dependency on manual inbox management.
 4. Live production runtime, DNS, TLS, computed contrast, browser/mobile behavior, and actual 404 response could not be independently exercised from the available runtime because the domain did not resolve there. These controls remain PARTIALLY VERIFIED rather than being inferred from source.
 5. Main's Decision Room is still the current generic page; hardened CASE-D01 PR #21 remains proposed/unmerged. Website links are correct but point to the current main artifact until that separate release gate is completed.
+6. Google Analytics was activated after the original September 1 verification. The privacy notice and this control record were reconciled on September 4, 2026; advertising pixels and cookie-consent controls remain absent.
 
 ## No unsupported security claims
 This verification does not establish SOC 2, ISO 27001, end-to-end encrypted inquiry transport, secure evidence upload, formal mailbox retention automation, DLP, MFA status, Exchange retention policy, CRM controls, or contractual privacy/security commitments beyond separately evidenced artifacts.
