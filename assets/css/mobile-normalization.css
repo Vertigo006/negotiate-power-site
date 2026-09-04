@@ -91,9 +91,9 @@
 }
 
 /* The desktop comparison table becomes too wide once the document preview is nested
-   inside tablet/mobile containers. Switch to the semantic vertical comparison before
-   horizontal scrolling becomes necessary. */
-@media (max-width: 768px) {
+   inside tablet/mobile containers. At 865px the nested content area still preserves
+   the table's 720px minimum width; below that point use the semantic vertical view. */
+@media (max-width: 864px) {
   .samples-page .matrix-wrap {
     display: none;
   }
