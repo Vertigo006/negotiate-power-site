@@ -1,0 +1,23 @@
+name: Direct final cleanup
+on:
+  push:
+    branches: [website-commercial-compression-2026-09-04]
+    paths: ['.github/workflows/direct-clean.yml']
+permissions:
+  contents: write
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: website-commercial-compression-2026-09-04
+          fetch-depth: 0
+      - run: |
+          rm -f .github/workflows/cleanup-qa-artifacts.yml .github/workflows/finalize-clean.yml .github/workflows/direct-clean.yml
+          rm -f THIS_IS_WRONG cleanup-note.txt scripts/cleanup-qa-artifacts.py scripts/finalize-commercial-qa.py
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'Remove temporary QA cleanup scaffolding'
+          git push origin HEAD:website-commercial-compression-2026-09-04
