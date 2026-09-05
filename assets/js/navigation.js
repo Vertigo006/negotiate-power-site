@@ -1,13 +1,11 @@
 (() => {
+  document.body.classList.add('js-nav');
   const toggle = document.querySelector('.nav-toggle');
   const nav = document.querySelector('#primary-navigation');
   if (!toggle || !nav) return;
 
   const mobileQuery = window.matchMedia('(max-width: 920px)');
   const navLinks = [...nav.querySelectorAll('a')];
-  const navCta = nav.querySelector('.nav-cta');
-
-  if (navCta) navCta.textContent = 'Bring Atlas a Decision';
 
   const normalizePath = value => {
     if (!value) return '/';
