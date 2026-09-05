@@ -21,4 +21,5 @@ jobs:
         with:
           ref: website-commercial-compression-2026-09-04
           fetch-depth: 0
-      - run: python scripts/apply-a11y-closure-fixes.py && bash scripts/commercial-closure-qa.sh
+      - name: Final commercial closure matrix
+        run: python scripts/apply-a11y-closure-fixes.py && bash scripts/commercial-closure-qa.sh
