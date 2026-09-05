@@ -1,0 +1,45 @@
+name: Apply accessibility remediation
+on:
+  push:
+    branches: [website-commercial-compression-2026-09-04]
+    paths: ['.github/workflows/remediate-a11y.yml']
+permissions:
+  contents: write
+jobs:
+  remediate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: website-commercial-compression-2026-09-04
+          fetch-depth: 0
+      - run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          css_path = Path('assets/css/site-v2.css')
+          css = css_path.read_text(encoding='utf-8')
+          marker = '/* Commercial closure accessibility fixes */'
+          if marker not in css:
+              css += '''\n\n/* Commercial closure accessibility fixes */
+.section-light .cta-helper{color:#536173}
+.article-content .button-primary{color:var(--ink)}
+.article-table-wrap:focus-visible,.exposure-table-wrap:focus-visible{outline:3px solid var(--gold-deep);outline-offset:4px}
+'''
+              css_path.write_text(css, encoding='utf-8')
+
+          for path in Path('intelligence').glob('*.html'):
+              text = path.read_text(encoding='utf-8')
+              text = text.replace('<div class="article-table-wrap">', '<div class="article-table-wrap" tabindex="0" aria-label="Scrollable comparison table">')
+              path.write_text(text, encoding='utf-8')
+
+          room = Path('decision-room.html')
+          text = room.read_text(encoding='utf-8')
+          text = text.replace('<div class="exposure-table-wrap">', '<div class="exposure-table-wrap" tabindex="0" aria-label="Scrollable economic exposure table">')
+          room.write_text(text, encoding='utf-8')
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/css/site-v2.css decision-room.html intelligence/*.html
+          git commit -m 'Fix commercial site accessibility findings'
+          git push origin HEAD:website-commercial-compression-2026-09-04
