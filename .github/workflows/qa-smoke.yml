@@ -1,23 +1,15 @@
-name: Commercial closure QA
+name: Accessibility diagnostic
 on:
   push:
     branches: [website-commercial-compression-2026-09-04]
-    paths:
-      - '.github/workflows/qa-smoke.yml'
-      - 'scripts/commercial-closure-qa.sh'
-      - '*.html'
-      - 'intelligence/*.html'
-      - 'assets/css/*.css'
-      - 'assets/js/*.js'
-permissions:
-  contents: write
+    paths: [.github/workflows/qa-smoke.yml]
 jobs:
-  closure:
+  diagnose:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with:
           ref: website-commercial-compression-2026-09-04
           fetch-depth: 0
-      - run: bash scripts/commercial-closure-qa.sh
+      - run: bash scripts/axe-diagnostic.sh
