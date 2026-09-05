@@ -70,7 +70,8 @@ jobs:
                   close = (
                       '<div class="article-conversion-close">'
                       '<h3>Your actual decision can change the answer.</h3>'
-                      '<p>Your mission, timing, economics, counterparties, and evidence can change the conclusion. '</n                      '<span>Public guidance is a starting point, not a substitute for customer-specific evidence.</span></p>'
+                      '<p>Your mission, timing, economics, counterparties, and evidence can change the conclusion. '
+                      '<span>Public guidance is a starting point, not a substitute for customer-specific evidence.</span></p>'
                       f'<div class="hero-actions"><a class="button button-primary" href="{mailto}">Bring Atlas a Decision</a>'
                       '<a class="button button-secondary" href="/decision-room.html">Explore the Decision Room</a></div>'
                       '<p class="cta-helper">Do not send sensitive records in the initial email.</p>'
