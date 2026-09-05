@@ -2,7 +2,13 @@ name: Commercial closure QA
 on:
   push:
     branches: [website-commercial-compression-2026-09-04]
-    paths: [.github/workflows/qa-smoke.yml]
+    paths:
+      - '.github/workflows/qa-smoke.yml'
+      - 'scripts/commercial-closure-qa.sh'
+      - '*.html'
+      - 'intelligence/*.html'
+      - 'assets/css/*.css'
+      - 'assets/js/*.js'
 permissions:
   contents: write
 jobs:
