@@ -1,11 +1,17 @@
-name: QA smoke
+name: Commercial closure QA
 on:
   push:
     branches: [website-commercial-compression-2026-09-04]
     paths: [.github/workflows/qa-smoke.yml]
+permissions:
+  contents: write
 jobs:
-  smoke:
+  closure:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
-      - run: echo "QA harness accepted"
+        with:
+          ref: website-commercial-compression-2026-09-04
+          fetch-depth: 0
+      - run: bash scripts/commercial-closure-qa.sh
