@@ -1,0 +1,14 @@
+name: Final editorial compression QA
+on:
+  push:
+    branches:
+      - final-editorial-ia-compression-2026-09-04
+permissions:
+  contents: read
+jobs:
+  closure:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run final editorial and runtime QA
+        run: bash scripts/editorial-closure-qa.sh
