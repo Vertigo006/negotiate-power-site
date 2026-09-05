@@ -1,0 +1,312 @@
+name: Commercial website closure QA
+
+on:
+  push:
+    branches:
+      - website-commercial-compression-2026-09-04
+    paths:
+      - .github/workflows/commercial-closure-qa.yml
+
+permissions:
+  contents: write
+
+jobs:
+  closure-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: website-commercial-compression-2026-09-04
+          fetch-depth: 0
+
+      - name: Apply final progressive-enhancement and article styles
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          css_path = Path('assets/css/site-v2.css')
+          css = css_path.read_text(encoding='utf-8')
+          marker = '/* Intelligence commercial conversion bridges */'
+          if marker not in css:
+              css += '''\n\n/* Intelligence commercial conversion bridges */
+.article-conversion-bridge{margin:30px 0 38px;padding:18px 20px;border:1px solid var(--line-dark);border-left:4px solid var(--gold-deep);border-radius:6px;background:#f7f3e8}.article-conversion-bridge p{margin:0;color:#344255}.article-conversion-bridge a{color:#755827;font-weight:800;text-underline-offset:3px}.article-conversion-close{margin:58px 0 0;padding:30px;border:1px solid var(--line-dark);border-radius:8px;background:rgba(8,17,31,.035)}.article-conversion-close h3{margin:0 0 12px}.article-conversion-close p{margin-bottom:18px}.article-conversion-close .hero-actions{margin-top:22px}.article-conversion-close .cta-helper{margin-top:14px;margin-bottom:0;color:#536173}
+@media(max-width:640px){.article-conversion-bridge{margin:24px 0 32px;padding:16px}.article-conversion-close{margin-top:46px;padding:22px}.article-conversion-close .hero-actions{display:grid;grid-template-columns:1fr}.article-conversion-close .button{width:100%}}
+
+/* Progressive enhancement: mobile navigation remains usable without JavaScript. */
+@media(max-width:920px){.nav-toggle{display:none}.site-nav{position:static;display:flex;visibility:visible;opacity:1;pointer-events:auto;transform:none}.site-nav>a[href="/"]{display:flex}body.js-nav .nav-toggle{display:inline-flex}body.js-nav .site-nav{position:absolute;top:100%;left:0;width:100%;visibility:hidden;opacity:0;pointer-events:none;transform:translateY(-8px)}body.js-nav .site-nav.is-open{visibility:visible;opacity:1;pointer-events:auto;transform:none}}
+'''
+              css_path.write_text(css, encoding='utf-8')
+
+          js_path = Path('assets/js/navigation.js')
+          js = js_path.read_text(encoding='utf-8')
+          if "document.body.classList.add('js-nav');" not in js:
+              js = js.replace('(() => {', "(() => {\n  document.body.classList.add('js-nav');", 1)
+              js_path.write_text(js, encoding='utf-8')
+
+          # Complete Twitter title/description metadata wherever OG text exists.
+          for path in list(Path('.').glob('*.html')) + list(Path('intelligence').glob('*.html')):
+              text = path.read_text(encoding='utf-8')
+              if '<meta name="twitter:card"' in text and '<meta name="twitter:title"' not in text:
+                  title = re.search(r'<meta property="og:title" content="([^"]+)">', text)
+                  desc = re.search(r'<meta property="og:description" content="([^"]+)">', text)
+                  addition = ''
+                  if title:
+                      addition += f'<meta name="twitter:title" content="{title.group(1)}">'
+                  if desc:
+                      addition += f'<meta name="twitter:description" content="{desc.group(1)}">'
+                  text = text.replace('<meta name="twitter:card" content="summary">', '<meta name="twitter:card" content="summary">' + addition, 1)
+                  path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Source and stale-claim validation
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from urllib.parse import urlparse
+          import re
+          import sys
+
+          pages = list(Path('.').glob('*.html')) + list(Path('intelligence').glob('*.html'))
+          errors = []
+          canonical_nav_labels = ['Atlas', 'Decision Room', 'Intelligence', 'Pricing', 'Bring Atlas a Decision']
+
+          for path in pages:
+              text = path.read_text(encoding='utf-8')
+              if text.count('id="primary-navigation"') != 1:
+                  errors.append(f'{path}: expected exactly one primary navigation')
+              nav = re.search(r'<nav class="site-nav" id="primary-navigation".*?</nav>', text, re.S)
+              if not nav:
+                  errors.append(f'{path}: primary navigation missing')
+              else:
+                  nav_text = re.sub(r'<[^>]+>', ' ', nav.group(0))
+                  for label in canonical_nav_labels:
+                      if label not in nav_text:
+                          errors.append(f'{path}: nav missing {label!r}')
+              if 'Bring Atlas a Decision' not in text and path.name != '404.html':
+                  errors.append(f'{path}: commercial CTA missing')
+              lowered = text.lower()
+              for stale in ['confidential qualification', 'request qualification', 'early-access', 'early access']:
+                  if stale in lowered:
+                      errors.append(f'{path}: stale phrase {stale!r}')
+              if 'confidence-scale' in text or 'aria-label="Moderate confidence"' in text:
+                  errors.append(f'{path}: pseudo-numeric confidence remains')
+              if '/assets/css/site-v2.css' in text and '/assets/css/mobile-normalization.css' not in text:
+                  errors.append(f'{path}: mobile-normalization stylesheet missing')
+
+              # Verify local href targets exist, ignoring anchors, mail, and external URLs.
+              for href in re.findall(r'href="([^"]+)"', text):
+                  if href.startswith(('#', 'mailto:', 'http://', 'https://')):
+                      continue
+                  parsed = urlparse(href)
+                  target = parsed.path
+                  if not target or target == '/':
+                      continue
+                  candidate = Path('.' + target)
+                  if candidate.is_dir():
+                      candidate = candidate / 'index.html'
+                  if not candidate.exists():
+                      errors.append(f'{path}: broken local href {href}')
+
+          articles = list(Path('intelligence').glob('*.html'))
+          for path in articles:
+              text = path.read_text(encoding='utf-8')
+              if text.count('article-conversion-bridge') != 1:
+                  errors.append(f'{path}: expected one upper conversion bridge')
+              if text.count('article-conversion-close') != 1:
+                  errors.append(f'{path}: expected one closing conversion bridge')
+              if '<meta name="twitter:title"' not in text or '<meta name="twitter:description"' not in text:
+                  errors.append(f'{path}: Twitter metadata incomplete')
+
+          if errors:
+              print('\n'.join(errors))
+              sys.exit(1)
+          print(f'Source validation PASS across {len(pages)} public HTML pages and {len(articles)} Intelligence articles.')
+          PY
+
+      - name: Install browser QA dependencies
+        shell: bash
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright axe-core >/dev/null 2>&1
+          npx playwright install --with-deps chromium >/dev/null
+
+      - name: Run runtime, responsive, keyboard, JS-disabled, and accessibility QA
+        shell: bash
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/atlas-site-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID || true' EXIT
+          sleep 2
+          cat > .tmp-commercial-site-qa.js <<'JS'
+          const { chromium } = require('playwright');
+          const axePath = require.resolve('axe-core/axe.min.js');
+
+          const base = 'http://127.0.0.1:4173';
+          const pages = [
+            '/', '/atlas.html', '/decision-room.html', '/engagements.html', '/samples.html',
+            '/intelligence.html', '/privacy.html', '/terms.html', '/404.html',
+            '/intelligence/fractional-ownership-vs-jet-card-vs-charter.html',
+            '/intelligence/aircraft-ownership-vs-charter.html',
+            '/intelligence/part-135-operator-due-diligence.html',
+            '/intelligence/how-to-compare-aircraft-management-companies.html',
+            '/intelligence/aircraft-management-fees-and-charter-revenue.html',
+            '/intelligence/what-managed-fleet-growth-really-signals.html',
+            '/intelligence/part-91-vs-part-135-aircraft-management.html',
+            '/intelligence/private-aviation-consolidation.html'
+          ];
+          const widths = [1440, 1280, 1024, 768, 430, 390, 375, 320];
+          const errors = [];
+          const notes = [];
+
+          function viewportFor(width) {
+            return { width, height: width <= 430 ? 844 : 900 };
+          }
+
+          async function gotoLocal(page, path) {
+            await page.route('https://www.googletagmanager.com/**', route => route.abort());
+            await page.goto(base + path, { waitUntil: 'domcontentloaded', timeout: 15000 });
+            await page.waitForTimeout(60);
+          }
+
+          (async () => {
+            const browser = await chromium.launch({ headless: true });
+            try {
+              for (const path of pages) {
+                for (const width of widths) {
+                  const context = await browser.newContext({ viewport: viewportFor(width) });
+                  const page = await context.newPage();
+                  await gotoLocal(page, path);
+
+                  const state = await page.evaluate(() => ({
+                    scrollWidth: document.documentElement.scrollWidth,
+                    innerWidth: window.innerWidth,
+                    main: !!document.querySelector('main'),
+                    h1: document.querySelectorAll('h1').length,
+                    nav: !!document.querySelector('#primary-navigation'),
+                    ctaText: document.querySelector('.nav-cta')?.textContent.trim() || '',
+                    buttonsOverlap: (() => {
+                      const visible = [...document.querySelectorAll('.hero-actions .button')].filter(el => {
+                        const s = getComputedStyle(el); const r = el.getBoundingClientRect();
+                        return s.display !== 'none' && s.visibility !== 'hidden' && r.width > 0 && r.height > 0;
+                      });
+                      for (let i=0;i<visible.length;i++) for (let j=i+1;j<visible.length;j++) {
+                        const a=visible[i].getBoundingClientRect(), b=visible[j].getBoundingClientRect();
+                        const overlap = Math.max(0, Math.min(a.right,b.right)-Math.max(a.left,b.left)) * Math.max(0, Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top));
+                        if (overlap > 2) return true;
+                      }
+                      return false;
+                    })()
+                  }));
+                  if (state.scrollWidth > state.innerWidth + 1) errors.push(`${path} @ ${width}: document horizontal overflow ${state.scrollWidth} > ${state.innerWidth}`);
+                  if (!state.main || state.h1 !== 1 || !state.nav) errors.push(`${path} @ ${width}: semantic shell invalid main=${state.main} h1=${state.h1} nav=${state.nav}`);
+                  if (state.ctaText !== 'Bring Atlas a Decision') errors.push(`${path} @ ${width}: nav CTA mismatch ${state.ctaText}`);
+                  if (state.buttonsOverlap) errors.push(`${path} @ ${width}: CTA/button overlap detected`);
+
+                  if (path === '/samples.html') {
+                    const matrix = await page.evaluate(() => ({
+                      desktop: getComputedStyle(document.querySelector('.matrix-wrap')).display,
+                      mobile: getComputedStyle(document.querySelector('.matrix-mobile')).display
+                    }));
+                    if (width <= 864 && !(matrix.desktop === 'none' && matrix.mobile !== 'none')) errors.push(`samples @ ${width}: mobile matrix state invalid`);
+                    if (width > 864 && !(matrix.desktop !== 'none' && matrix.mobile === 'none')) errors.push(`samples @ ${width}: desktop matrix state invalid`);
+                  }
+
+                  if (path === '/decision-room.html') {
+                    const room = await page.evaluate(() => ({
+                      scale: !!document.querySelector('.confidence-scale'),
+                      confidence: document.querySelector('.confidence-state strong')?.textContent.trim(),
+                      release: document.querySelector('.decision-meta')?.textContent || ''
+                    }));
+                    if (room.scale) errors.push(`decision-room @ ${width}: pseudo-numeric confidence scale present`);
+                    if (room.confidence !== 'Moderate') errors.push(`decision-room @ ${width}: qualitative confidence missing`);
+                    if (!room.release.includes('Illustrative human-review state')) errors.push(`decision-room @ ${width}: illustrative release state missing`);
+                  }
+
+                  if ((width === 1440 || width === 390) && path !== '/404.html') {
+                    await page.addScriptTag({ path: axePath });
+                    const axe = await page.evaluate(async () => await axe.run(document, { runOnly: { type: 'tag', values: ['wcag2a','wcag2aa','wcag21a','wcag21aa'] } }));
+                    const serious = axe.violations.filter(v => ['serious','critical'].includes(v.impact));
+                    if (serious.length) errors.push(`${path} @ ${width}: axe serious/critical ${serious.map(v => v.id).join(',')}`);
+                    notes.push(`${path} @ ${width}: axe violations total=${axe.violations.length}, serious/critical=${serious.length}`);
+                  }
+                  await context.close();
+                }
+              }
+
+              // Desktop/mobile navigation and keyboard behavior.
+              for (const width of [1440, 390]) {
+                const context = await browser.newContext({ viewport: viewportFor(width) });
+                const page = await context.newPage();
+                await gotoLocal(page, '/');
+                if (width === 390) {
+                  const visible = await page.locator('.nav-toggle').isVisible();
+                  if (!visible) errors.push('mobile keyboard: nav toggle not visible with JS enabled');
+                  await page.locator('.nav-toggle').focus();
+                  await page.keyboard.press('Enter');
+                  if (await page.locator('.nav-toggle').getAttribute('aria-expanded') !== 'true') errors.push('mobile keyboard: nav did not open by keyboard');
+                  await page.keyboard.press('Escape');
+                  if (await page.locator('.nav-toggle').getAttribute('aria-expanded') !== 'false') errors.push('mobile keyboard: Escape did not close nav');
+                  const focused = await page.evaluate(() => document.activeElement?.classList.contains('nav-toggle'));
+                  if (!focused) errors.push('mobile keyboard: focus not restored to nav toggle after Escape');
+                } else {
+                  if (await page.locator('.nav-toggle').isVisible()) errors.push('desktop navigation: mobile toggle unexpectedly visible');
+                  if (!(await page.locator('#primary-navigation').isVisible())) errors.push('desktop navigation: primary nav not visible');
+                }
+                await context.close();
+              }
+
+              // JavaScript-disabled progressive enhancement on mobile.
+              {
+                const context = await browser.newContext({ viewport: viewportFor(390), javaScriptEnabled: false });
+                const page = await context.newPage();
+                await page.goto(base + '/', { waitUntil: 'domcontentloaded' });
+                const navVisible = await page.locator('#primary-navigation').isVisible();
+                const toggleVisible = await page.locator('.nav-toggle').isVisible();
+                if (!navVisible) errors.push('JS-disabled mobile: primary navigation is not visible');
+                if (toggleVisible) errors.push('JS-disabled mobile: nonfunctional menu toggle remains visible');
+                await context.close();
+              }
+
+              // Mailto integrity on primary CTA.
+              {
+                const context = await browser.newContext({ viewport: viewportFor(1440) });
+                const page = await context.newPage();
+                await gotoLocal(page, '/');
+                const href = await page.locator('.nav-cta').getAttribute('href');
+                for (const token of ['Decision%20%2F%20question%3A','Decision%20owner%3A','Deadline%3A','Alternatives%3A','What%20is%20most%20at%20stake%3A']) {
+                  if (!href.includes(token)) errors.push(`mailto integrity: missing ${token}`);
+                }
+                await context.close();
+              }
+            } finally {
+              await browser.close();
+            }
+
+            console.log(notes.join('\n'));
+            if (errors.length) {
+              console.error('\nQA FAILURES:\n' + errors.join('\n'));
+              process.exit(1);
+            }
+            console.log(`\nRuntime QA PASS: ${pages.length} pages × ${widths.length} viewports; keyboard, JS-disabled, Samples, Decision Room, mailto, and axe gates passed.`);
+          })().catch(err => { console.error(err); process.exit(1); });
+          JS
+          node .tmp-commercial-site-qa.js
+          rm -f .tmp-commercial-site-qa.js
+
+      - name: Commit closure fixes if QA passes
+        shell: bash
+        run: |
+          rm -f package.json package-lock.json
+          if git diff --quiet; then
+            echo 'No closure source changes required.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/css/site-v2.css assets/js/navigation.js -- '*.html'
+          git commit -m 'Close commercial website runtime QA findings [skip ci]'
+          git push origin HEAD:website-commercial-compression-2026-09-04
