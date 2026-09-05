@@ -1,0 +1,11 @@
+name: QA smoke
+on:
+  push:
+    branches: [website-commercial-compression-2026-09-04]
+    paths: [.github/workflows/qa-smoke.yml]
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo "QA harness accepted"
