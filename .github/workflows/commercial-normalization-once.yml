@@ -1,0 +1,128 @@
+name: One-time commercial normalization
+
+on:
+  push:
+    branches:
+      - website-commercial-compression-2026-09-04
+    paths:
+      - .github/workflows/commercial-normalization-once.yml
+
+permissions:
+  contents: write
+
+jobs:
+  normalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: website-commercial-compression-2026-09-04
+          fetch-depth: 0
+      - name: Normalize public navigation, article conversion bridges, and metadata
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          root = Path('.')
+          mailto = ('mailto:contact@negotiatepower.com?subject=Bring%20Atlas%20a%20Decision'
+                    '&body=Decision%20%2F%20question%3A%0ADecision%20owner%3A%0ADeadline%3A%0AAlternatives%3A%0AWhat%20is%20most%20at%20stake%3A')
+          canonical_nav = (
+              '<nav class="site-nav" id="primary-navigation" aria-label="Primary navigation">'
+              '<a href="/atlas.html">Atlas</a>'
+              '<a href="/decision-room.html">Decision Room</a>'
+              '<a href="/intelligence.html">Intelligence</a>'
+              '<a href="/engagements.html">Pricing</a>'
+              f'<a class="nav-cta" href="{mailto}">Bring Atlas a Decision</a>'
+              '</nav>'
+          )
+
+          all_html = list(root.glob('*.html')) + list((root / 'intelligence').glob('*.html'))
+          nav_pattern = re.compile(r'<nav class="site-nav" id="primary-navigation" aria-label="Primary navigation">.*?</nav>', re.S)
+
+          for path in all_html:
+              text = path.read_text(encoding='utf-8')
+              text, n = nav_pattern.subn(canonical_nav, text, count=1)
+              if n != 1:
+                  raise SystemExit(f'{path}: expected one primary nav, found {n}')
+              if '/assets/css/mobile-normalization.css' not in text and '/assets/css/site-v2.css' in text:
+                  text = text.replace('<link rel="stylesheet" href="/assets/css/site-v2.css">', '<link rel="stylesheet" href="/assets/css/site-v2.css"><link rel="stylesheet" href="/assets/css/mobile-normalization.css">', 1)
+              path.write_text(text, encoding='utf-8')
+
+          article_paths = sorted((root / 'intelligence').glob('*.html'))
+          for path in article_paths:
+              text = path.read_text(encoding='utf-8')
+
+              if 'article-conversion-bridge' not in text:
+                  bridge = (
+                      '<div class="article-conversion-bridge">'
+                      '<p><strong>Making this decision now?</strong> See how Atlas evaluates a real consequential aviation decision. '
+                      '<a href="/decision-room.html">Explore the Decision Room</a>.</p>'
+                      '</div>'
+                  )
+                  pattern = re.compile(r'(<div class="article-callout">.*?</div>)', re.S)
+                  text, n = pattern.subn(r'\1' + bridge, text, count=1)
+                  if n != 1:
+                      raise SystemExit(f'{path}: expected one introductory article callout')
+
+              if 'article-conversion-close' not in text:
+                  close = (
+                      '<div class="article-conversion-close">'
+                      '<h3>Your actual decision can change the answer.</h3>'
+                      '<p>Your mission, timing, economics, counterparties, and evidence can change the conclusion. '</n                      '<span>Public guidance is a starting point, not a substitute for customer-specific evidence.</span></p>'
+                      f'<div class="hero-actions"><a class="button button-primary" href="{mailto}">Bring Atlas a Decision</a>'
+                      '<a class="button button-secondary" href="/decision-room.html">Explore the Decision Room</a></div>'
+                      '<p class="cta-helper">Do not send sensitive records in the initial email.</p>'
+                      '</div>'
+                  )
+                  marker = '<div class="article-sources">'
+                  if marker not in text:
+                      marker = '<div class="article-next">'
+                  if marker not in text:
+                      raise SystemExit(f'{path}: no article closing insertion point')
+                  text = text.replace(marker, close + marker, 1)
+
+              if '<meta name="twitter:title"' not in text:
+                  title_match = re.search(r'<meta property="og:title" content="([^"]+)">', text)
+                  desc_match = re.search(r'<meta property="og:description" content="([^"]+)">', text)
+                  twitter = ''
+                  if title_match:
+                      twitter += f'<meta name="twitter:title" content="{title_match.group(1)}">'
+                  if desc_match:
+                      twitter += f'<meta name="twitter:description" content="{desc_match.group(1)}">'
+                  text = text.replace('<meta name="twitter:card" content="summary">', '<meta name="twitter:card" content="summary">' + twitter, 1)
+
+              if '<link rel="icon"' not in text:
+                  text = text.replace('</head>', '<link rel="icon" href="/assets/brand/resolution-aperture-primary.svg" type="image/svg+xml">\n</head>', 1)
+
+              if text.count('article-conversion-bridge') != 1 or text.count('article-conversion-close') != 1:
+                  raise SystemExit(f'{path}: conversion bridge count invalid')
+              path.write_text(text, encoding='utf-8')
+
+          print(f'Normalized {len(all_html)} public HTML pages and {len(article_paths)} Intelligence articles.')
+          PY
+      - name: Validate stale commercial language
+        shell: bash
+        run: |
+          set -e
+          if grep -RniE 'confidential qualification|request qualification|early-access|early access' --include='*.html' .; then
+            echo 'Stale commercial language remains.' >&2
+            exit 1
+          fi
+          if grep -RniE 'confidence-scale|aria-label="Moderate confidence"' --include='*.html' .; then
+            echo 'Pseudo-numeric confidence markup remains.' >&2
+            exit 1
+          fi
+      - name: Commit normalized source
+        shell: bash
+        run: |
+          if git diff --quiet; then
+            echo 'No normalization changes required.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- '*.html'
+          git commit -m 'Normalize remaining commercial website pages [skip ci]'
+          git push origin HEAD:website-commercial-compression-2026-09-04
