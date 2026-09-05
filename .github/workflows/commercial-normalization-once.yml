@@ -18,7 +18,7 @@ jobs:
         with:
           ref: website-commercial-compression-2026-09-04
           fetch-depth: 0
-      - name: Normalize public navigation, article conversion bridges, and metadata
+      - name: Normalize public navigation, article conversion bridges, metadata, and bridge styles
         shell: bash
         run: |
           python - <<'PY'
@@ -53,19 +53,14 @@ jobs:
           article_paths = sorted((root / 'intelligence').glob('*.html'))
           for path in article_paths:
               text = path.read_text(encoding='utf-8')
-
               if 'article-conversion-bridge' not in text:
-                  bridge = (
-                      '<div class="article-conversion-bridge">'
-                      '<p><strong>Making this decision now?</strong> See how Atlas evaluates a real consequential aviation decision. '
-                      '<a href="/decision-room.html">Explore the Decision Room</a>.</p>'
-                      '</div>'
-                  )
+                  bridge = ('<div class="article-conversion-bridge"><p><strong>Making this decision now?</strong> '
+                            'See how Atlas evaluates a real consequential aviation decision. '
+                            '<a href="/decision-room.html">Explore the Decision Room</a>.</p></div>')
                   pattern = re.compile(r'(<div class="article-callout">.*?</div>)', re.S)
                   text, n = pattern.subn(r'\1' + bridge, text, count=1)
                   if n != 1:
                       raise SystemExit(f'{path}: expected one introductory article callout')
-
               if 'article-conversion-close' not in text:
                   close = (
                       '<div class="article-conversion-close">'
@@ -77,13 +72,10 @@ jobs:
                       '<p class="cta-helper">Do not send sensitive records in the initial email.</p>'
                       '</div>'
                   )
-                  marker = '<div class="article-sources">'
-                  if marker not in text:
-                      marker = '<div class="article-next">'
+                  marker = '<div class="article-sources">' if '<div class="article-sources">' in text else '<div class="article-next">'
                   if marker not in text:
                       raise SystemExit(f'{path}: no article closing insertion point')
                   text = text.replace(marker, close + marker, 1)
-
               if '<meta name="twitter:title"' not in text:
                   title_match = re.search(r'<meta property="og:title" content="([^"]+)">', text)
                   desc_match = re.search(r'<meta property="og:description" content="([^"]+)">', text)
@@ -93,13 +85,21 @@ jobs:
                   if desc_match:
                       twitter += f'<meta name="twitter:description" content="{desc_match.group(1)}">'
                   text = text.replace('<meta name="twitter:card" content="summary">', '<meta name="twitter:card" content="summary">' + twitter, 1)
-
               if '<link rel="icon"' not in text:
                   text = text.replace('</head>', '<link rel="icon" href="/assets/brand/resolution-aperture-primary.svg" type="image/svg+xml">\n</head>', 1)
-
               if text.count('article-conversion-bridge') != 1 or text.count('article-conversion-close') != 1:
                   raise SystemExit(f'{path}: conversion bridge count invalid')
               path.write_text(text, encoding='utf-8')
+
+          css_path = root / 'assets/css/site-v2.css'
+          css = css_path.read_text(encoding='utf-8')
+          marker = '/* Intelligence commercial conversion bridges */'
+          if marker not in css:
+              css += '''\n\n/* Intelligence commercial conversion bridges */
+.article-conversion-bridge{margin:30px 0 38px;padding:18px 20px;border:1px solid var(--line-dark);border-left:4px solid var(--gold-deep);border-radius:6px;background:#f7f3e8}.article-conversion-bridge p{margin:0;color:#344255}.article-conversion-bridge a{color:#755827;font-weight:800;text-underline-offset:3px}.article-conversion-close{margin:58px 0 0;padding:30px;border:1px solid var(--line-dark);border-radius:8px;background:rgba(8,17,31,.035)}.article-conversion-close h3{margin:0 0 12px}.article-conversion-close p{margin-bottom:18px}.article-conversion-close .hero-actions{margin-top:22px}.article-conversion-close .cta-helper{margin-top:14px;margin-bottom:0;color:#536173}
+@media(max-width:640px){.article-conversion-bridge{margin:24px 0 32px;padding:16px}.article-conversion-close{margin-top:46px;padding:22px}.article-conversion-close .hero-actions{display:grid;grid-template-columns:1fr}.article-conversion-close .button{width:100%}}
+'''
+              css_path.write_text(css, encoding='utf-8')
 
           print(f'Normalized {len(all_html)} public HTML pages and {len(article_paths)} Intelligence articles.')
           PY
@@ -124,6 +124,6 @@ jobs:
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -- '*.html'
-          git commit -m 'Normalize remaining commercial website pages [skip ci]'
+          git add -- '*.html' assets/css/site-v2.css
+          git commit -m 'Style Intelligence conversion bridges [skip ci]'
           git push origin HEAD:website-commercial-compression-2026-09-04
