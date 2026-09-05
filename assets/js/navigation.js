@@ -1,4 +1,5 @@
 (() => {
+  document.body.classList.add('js-nav');
   const toggle = document.querySelector('.nav-toggle');
   const nav = document.querySelector('#primary-navigation');
   if (!toggle || !nav) return;

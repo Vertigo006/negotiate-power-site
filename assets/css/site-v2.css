@@ -31,3 +31,18 @@ body.nav-open{overflow:hidden}.section-major{padding-block:124px}.section-standa
 @media(max-width:920px){.site-nav{display:flex;visibility:hidden;opacity:0;pointer-events:none;transform:translateY(-8px);transition:opacity 170ms ease,transform 170ms ease,visibility 170ms ease}.site-nav.is-open{display:flex;visibility:visible;opacity:1;pointer-events:auto;transform:none}.site-nav>a[href="/"]{display:flex}.site-nav a[aria-current="page"]{color:var(--gold)}.site-nav a[aria-current="page"]::after{top:12px;right:auto;bottom:12px;left:-10px;width:2px;height:auto}.section-major{padding-block:92px}.section-standard{padding-block:76px}.section-compact{padding-block:58px}.hero.section.section-major{padding-top:96px;padding-bottom:58px}.sample-state-grid{grid-template-columns:repeat(2,minmax(0,1fr))}body:has(.site-nav.is-open){overflow:hidden}}
 @media(max-width:640px){h1,.article-hero h1,.sample-hero h1,.legal-shell h1,.error-content h1{font-size:clamp(2.7rem,12.5vw,4.35rem)}.hero-function{font-size:1rem}.decision-state-panel{padding:22px}.decision-state-head{align-items:flex-start;flex-direction:column}.decision-state-row{grid-template-columns:1fr;gap:4px}.resolution-flow span,.resolution-flow strong{width:100%;justify-content:flex-start}.sample-state-grid{grid-template-columns:1fr}.section-major{padding-block:76px}.section-standard{padding-block:64px}.section-compact{padding-block:48px}.hero.section.section-major{padding-top:78px;padding-bottom:48px}}
 @media(prefers-reduced-motion:reduce){.site-nav,.resolution-flow,.decision-state-panel,.feature-card:has(h3>a),.feature-card:has(h3>a)::after{transition:none!important;transform:none!important}.resolution-flow:not(.is-visible),.decision-state-panel:not(.is-visible){opacity:1}}
+
+
+/* Accessibility closure: commercial contrast and focusable scroll regions */
+.section-light .cta-helper{color:var(--muted-dark)}
+.article-content .button-primary{color:var(--ink)}
+.section-accent .eyebrow.dark{color:#344255}
+.article-table-wrap:focus-visible,.exposure-table-wrap:focus-visible{outline:3px solid var(--gold-deep);outline-offset:3px}
+
+
+/* Intelligence commercial conversion bridges */
+.article-conversion-bridge{margin:30px 0 38px;padding:18px 20px;border:1px solid var(--line-dark);border-left:4px solid var(--gold-deep);border-radius:6px;background:#f7f3e8}.article-conversion-bridge p{margin:0;color:#344255}.article-conversion-bridge a{color:#755827;font-weight:800;text-underline-offset:3px}.article-conversion-close{margin:58px 0 0;padding:30px;border:1px solid var(--line-dark);border-radius:8px;background:rgba(8,17,31,.035)}.article-conversion-close h3{margin:0 0 12px}.article-conversion-close p{margin-bottom:18px}.article-conversion-close .hero-actions{margin-top:22px}.article-conversion-close .cta-helper{margin-top:14px;margin-bottom:0;color:#536173}
+@media(max-width:640px){.article-conversion-bridge{margin:24px 0 32px;padding:16px}.article-conversion-close{margin-top:46px;padding:22px}.article-conversion-close .hero-actions{display:grid;grid-template-columns:1fr}.article-conversion-close .button{width:100%}}
+
+/* Progressive enhancement: mobile navigation remains usable without JavaScript. */
+@media(max-width:920px){.nav-toggle{display:none}.site-nav{position:static;display:flex;visibility:visible;opacity:1;pointer-events:auto;transform:none}.site-nav>a[href="/"]{display:flex}body.js-nav .nav-toggle{display:inline-flex}body.js-nav .site-nav{position:absolute;top:100%;left:0;width:100%;visibility:hidden;opacity:0;pointer-events:none;transform:translateY(-8px)}body.js-nav .site-nav.is-open{visibility:visible;opacity:1;pointer-events:auto;transform:none}}
