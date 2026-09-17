@@ -27,6 +27,28 @@
 
   if (nav && !isHistorical) nav.innerHTML = currentNav;
 
+  /* Current BRENO vocabulary. Historical Atlas evidence is intentionally excluded. */
+  if (!isHistorical) {
+    const replacements = new Map([
+      ['CALL', 'DIRECTION'],
+      ['THE CALL', 'THE DIRECTION'],
+      ['What changes the call?', 'What changes the direction?'],
+      ['What Changes the Call?', 'What Changes the Direction?'],
+      ['what would change the call.', 'what would change the direction.'],
+      ['what would change the call', 'what would change the direction'],
+      ['conditions that could change the call', 'conditions that could change the direction'],
+      ['conditions that should reopen the call', 'conditions that should reopen the direction']
+    ]);
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+      acceptNode(node) {
+        if (node.parentElement?.closest('script,style')) return NodeFilter.FILTER_REJECT;
+        return [...replacements.keys()].some(term => node.nodeValue.includes(term)) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+      }
+    });
+    const nodes = []; while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(node => replacements.forEach((to, from) => { node.nodeValue = node.nodeValue.split(from).join(to); }));
+  }
+
   if (isIntelligenceArticle) {
     document.querySelectorAll('a[href="/decision-room.html"]').forEach(link => {
       link.href = '/example.html';
