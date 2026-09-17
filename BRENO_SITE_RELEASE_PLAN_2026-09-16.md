@@ -1,63 +1,77 @@
 # BRENO Site Production Migration Plan
 
-Status: RELEASE CANDIDATE STAGED / DO NOT MERGE WITHOUT OWNER RELEASE APPROVAL
+Status: INTEGRATED RELEASE CANDIDATE / FINAL VISUAL QUALIFICATION REQUIRED / DO NOT MERGE WITHOUT OWNER RELEASE APPROVAL
 
 ## Governing rule
-Preservation before improvement. Production remains unchanged until the decomposed BRENO site passes visual, navigation, metadata, and path qualification.
+Preservation before improvement. Production remains unchanged until the integrated BRENO site passes final visual, navigation, metadata, and path qualification.
 
-## Validated preview architecture
-- `/breno-site-preview.html` → production `/` (`index.html`)
-- `/breno-preview.html` → production `/breno.html`
-- `/breno-how-it-works-preview.html` → production `/how-it-works.html`
-- `/breno-example-preview.html` → production `/example.html`
-- `/breno-pricing-preview.html` → production `/pricing.html`
+## Release architecture
+Primary buyer path:
+- `/` → concise BRENO landing and conversion surface
+- `/breno.html` → product definition
+- `/how-it-works.html` → decision process and progressive diligence
+- `/example.html` → primary illustrative decision
+- `/pricing.html` → current commercial offer
+
+Depth and acquisition paths:
+- `/methodology.html` → methodology, evidence discipline, boundaries, qualification provenance
+- `/intelligence.html` → aviation Insights hub retaining eight existing article URLs
+- `/aircraft-acquisition.html` → acquisition-specific commercial/search landing page
+- `/aviation-advisers.html` → professional/adviser integration landing page
+- `/samples.html` → fictionalized confirm/condition/change decision patterns
+
+Historical/provenance paths:
+- `/atlas.html` → preserved Atlas qualification/provenance record
+- `/decision-room.html` → preserved Atlas-era fictionalized interface demonstration
+
+Consolidated compatibility paths:
+- `/challenge.html` → retained compatibility URL; noindex/follow; canonical to `/breno.html`
+- `/engagements.html` → retained compatibility URL; noindex/follow; canonical to `/pricing.html`
+- Both are intentionally removed from the sitemap.
 
 ## Production migration controls
 1. Do not delete historical Atlas artifacts merely to complete the brand migration.
 2. Do not perform global Atlas → BRENO replacement. Historical provenance must remain historically accurate.
-3. Replace public-facing current-product references only after identifying whether each reference is current positioning, historical evidence, or an inbound SEO path.
-4. Preserve existing high-value aviation pages unless a replacement is explicitly qualified.
-5. Preserve existing legal pages, analytics, favicon/touch assets, sitemap/robots behavior, and contact routes unless separately reviewed.
-6. Keep BRENO claims bounded: aviation is the deepest demonstrated proving ground; non-aviation work is conditional on domain evidence, expertise, and controls.
-7. Keep decision ownership and professional authority with the customer/qualified professional.
-8. Keep current pricing authority unchanged unless separately approved.
+3. Preserve high-value aviation search intent and existing article URLs.
+4. Keep page-level language differentiated; each page must add information rather than restate the homepage.
+5. Keep BRENO claims bounded: aviation is the deepest demonstrated proving ground; non-aviation work is conditional on domain evidence, expertise, and controls.
+6. Keep decision ownership and professional authority with the customer/qualified professional.
+7. Keep current pricing authority unchanged unless separately approved.
+8. Do not represent fictionalized examples as customer outcomes.
 
-## Legacy path treatment
-- `atlas.html`: preserved in the initial release. Do not delete or redirect until inbound traffic/backlinks and redirect behavior are separately qualified.
-- `challenge.html`, `decision-room.html`, `engagements.html`: preserved in the initial release; classification remains documented in `BRENO_LEGACY_PAGE_CLASSIFICATION_2026-09-16.md`.
-- Aviation landing pages and intelligence library: preserved.
-- Historical Atlas evidence/provenance: unchanged; no global nomenclature rewrite.
-
-## Qualification completed in this tranche
-- Production file mapping staged on the feature branch only. `main` remains unchanged.
-- Production homepage now uses BRENO metadata, self-canonical root URL, index/follow, Open Graph/Twitter metadata, and BRENO structured data.
-- Dedicated BRENO, How It Works, Example, and Pricing production paths are staged with unique titles, descriptions, index/follow directives, and self-canonical URLs.
-- Production navigation resolves only to staged production paths or preserved legal/contact paths.
-- Secondary production pages include skip links, `main-content` targets, primary-navigation labels, decorative navigation semantics, and legal footer navigation.
-- Sitemap adds all new BRENO production paths atomically while retaining legacy Atlas, Decision Room, Engagements, Challenge, aviation, intelligence, sample, and legal URLs.
-- `robots.txt` requires no change: it already permits crawling and points to the canonical sitemap.
-- Shared navigation script remains compatible with the new production paths and derives `aria-current` from pathname.
-- Vercel GitHub integration reported successful preview-comment check with zero unresolved feedback on staged head `7987ae3`.
+## Qualification completed
+- Production mappings staged only on `brand/breno-homepage-2026-09-16`; `main` remains unchanged.
+- Homepage and primary BRENO pages use current metadata, self-canonical URLs, and index/follow.
+- Insights hub migrated into BRENO navigation while retaining all eight aviation article URLs and search topics.
+- Existing article substantive content remains preserved. Shared navigation normalizes article-visible navigation and conversion links into the BRENO journey while historical Atlas provenance remains available.
+- Aircraft Acquisition migrated around mission integration, ownership thesis, commitment timing, persistent exposure, and professional boundaries.
+- Aviation Advisers migrated around role preservation, integration gaps, repeat-decision controls, and commercial alignment.
+- Atlas page explicitly preserves historical qualification evidence rather than retroactively renaming it.
+- Decision Room explicitly identifies itself as an Atlas-era fictionalized interface demonstration.
+- Samples reframed as fictionalized decision patterns rather than customer results.
+- Legacy Challenge and Engagements URLs consolidated without deletion, removed from sitemap, and set noindex/follow with current canonical destinations.
+- Sitemap now contains only current canonical BRENO, retained search/application, indexed proof/provenance, and legal surfaces.
+- `robots.txt` remains compatible and unchanged.
+- Shared navigation maintains mobile behavior, active-path semantics, and BRENO article conversion normalization.
+- GitHub/Vercel status for integrated head `de2f9d2ae5628be4f39236b0b624ea8b6e1a38f4` returned SUCCESS.
+- Branch remains 39 commits ahead / 0 behind production baseline `d17389c08b4d43baf2e1cde6b2c6e627c57cf271`.
 
 ## Release gates
-- [x] Short-form homepage architecture approved in principle.
-- [x] Multi-page preview deployed successfully through Vercel.
-- [x] Desktop/tablet BRENO identity and hero direction visually qualified.
-- [x] Phone hero/navigation direction visually qualified.
-- [x] Owner reports decomposed site is materially cleaner.
-- [ ] Full secondary-page visual pass on the latest production-mapped branch head.
-- [x] Internal production links statically verified against staged or preserved files.
-- [x] Accessibility semantics normalized across staged production secondary pages.
-- [x] Production titles/descriptions/canonical strategy prepared and staged.
-- [x] Sitemap and robots impact reviewed; sitemap staged, robots preserved.
-- [x] Legacy Atlas/current-product references classified.
-- [x] Production file mapping staged on branch.
+- [x] BRENO identity and short-form buyer architecture approved.
+- [x] Owner approved preservation/depth architecture.
+- [x] Initial BRENO desktop/tablet/phone visual direction qualified.
+- [x] Aviation authority/search assets preserved.
+- [x] Application surfaces migrated.
+- [x] Legacy Atlas/current-product references classified and dispositioned.
+- [x] Metadata/canonical/sitemap strategy staged.
+- [x] Integrated Vercel deployment reports SUCCESS through GitHub status.
+- [ ] Owner visual pass on integrated head `de2f9d2` including homepage, Insights, Aircraft Acquisition, Aviation Advisers, Samples, Atlas provenance, and Decision Room historical demonstration.
 - [ ] Owner release approval.
 - [ ] Merge to main.
 - [ ] Production smoke test after Vercel deployment.
 
-## Current blocker before owner release decision
-The connected Vercel API currently does not enumerate canonical website project `prj_dkb8tWTbXzvHHxDCcfFJR7v1usf2`, although the authenticated Vercel dashboard and GitHub's Vercel integration show the website project and branch deployments. Because the latest production-mapped branch head cannot be fetched through the connector for a browser-level visual pass, visual qualification remains intentionally open. Do not infer a visual PASS from static source inspection alone.
+## Current intervention point
+The implementation sprint has reached the final browser-level visual qualification gate. Static/source and deployment-status gates are complete. Owner inspection is required because visual hierarchy, page engagement, and cross-device rendering cannot be truthfully qualified from repository source alone.
 
 ## Rollback
 The pre-migration `main` commit is `d17389c08b4d43baf2e1cde6b2c6e627c57cf271`. If production promotion fails qualification after merge, restore the prior production files from that commit rather than attempting an improvised live repair.
