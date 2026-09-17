@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" role="img" aria-label="Resolution Aperture">
+<metadata>Resolution Aperture geometry RA-1.0; reverse presentation for dark surfaces. Geometry unchanged.</metadata>
+<path d="M160 210 L445 20 L445 315 L335 515 L160 860 Z" fill="#F7F4ED"/>
+<path d="M555 20 L840 210 L840 860 L665 515 L555 315 Z" fill="#F7F4ED"/>
+<path d="M330 860 L500 525 L670 860 L585 860 L500 685 L415 860 Z" fill="#F7F4ED"/>
+<path d="M405 860 L500 680 L595 860 L500 805 Z" fill="#AEB8C5"/>
+</svg>
