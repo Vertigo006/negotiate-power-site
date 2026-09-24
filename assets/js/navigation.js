@@ -24,7 +24,7 @@
       </div>
     </div>
     <a class="nav-direct" href="/pricing.html">Pricing</a>
-    <a class="nav-direct nav-login" href="https://negotiate-power-app.vercel.app/sign-in" rel="nofollow">Login</a>
+    <a class="nav-direct nav-login" href="https://app.negotiatepower.com/sign-in" rel="nofollow">Login</a>
     <a class="nav-cta" href="mailto:contact@negotiatepower.com?subject=Bring%20a%20Decision">Bring a Decision</a>`;
 
   if (nav && !isHistorical) nav.innerHTML = currentNav;
