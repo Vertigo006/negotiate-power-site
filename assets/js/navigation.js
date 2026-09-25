@@ -54,6 +54,23 @@
     document.querySelectorAll('.atlas-context-line').forEach(line=>{line.innerHTML='Decision intelligence by <a href="/breno.html">BRENO</a>, with Atlas-era qualification provenance preserved in the <a href="/atlas.html">historical record</a>.';});
   }
 
+  /* Stage 0 commercial measurement: record only page/CTA context, never email body or Decision Object data. */
+  const measurementPath = path === '/index.html' ? '/' : path;
+  const pageContext = document.body.dataset.decisionCategory || (isIntelligenceArticle ? 'aviation_insight' : (measurementPath === '/aircraft-acquisition.html' ? 'aircraft_acquisition' : (measurementPath === '/' ? 'homepage' : measurementPath.replace(/^\\/|\\.html$/g,'').replaceAll('/','_') || 'homepage')));
+  const classifyCta = link => {
+    if (link.matches('.nav-cta')) return 'primary_nav';
+    if (/organizational/i.test(link.textContent || '')) return 'organizational_use';
+    if (/bring a decision|evaluate an acquisition/i.test(link.textContent || '')) return 'primary_commercial';
+    return null;
+  };
+  document.addEventListener('click', event => {
+    const link = event.target.closest('a[href^="mailto:contact@negotiatepower.com"]');
+    if (!link || typeof window.gtag !== 'function') return;
+    const ctaType = classifyCta(link);
+    if (!ctaType) return;
+    window.gtag('event','commercial_cta_click',{cta_type:ctaType,decision_category:pageContext,originating_path:measurementPath});
+  });
+
   const toggle=document.querySelector('.nav-toggle'); const activeNav=document.querySelector('#primary-navigation'); if(!toggle||!activeNav)return;
   const mobileQuery=window.matchMedia('(max-width: 920px)');
   const normalizePath=value=>{if(!value)return'/';const url=new URL(value,window.location.origin);return url.pathname==='/index.html'?'/':url.pathname;};
