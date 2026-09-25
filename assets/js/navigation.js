@@ -60,7 +60,7 @@
   const classifyCta = link => {
     if (link.matches('.nav-cta')) return 'primary_nav';
     if (/organizational/i.test(link.textContent || '')) return 'organizational_use';
-    if (/bring a decision|evaluate an acquisition/i.test(link.textContent || '')) return 'primary_commercial';
+    if (/bring a decision|evaluate an acquisition|challenge my decision/i.test(link.textContent || '')) return 'primary_commercial';
     return null;
   };
   document.addEventListener('click', event => {
