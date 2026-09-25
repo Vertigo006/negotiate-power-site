@@ -1,21 +1,28 @@
 # Negotiate Power Website
 
-Static public website for **Negotiate Power**.
+Static public website for **Negotiate Power** and **BRENO** decision intelligence.
 
 > Intelligence for Consequential Decisions  
-> Aviation intelligence powered by the proprietary Atlas Engine.
+> The technology can be complex. The decision should not be.
 
 ## Architecture
 
-- Plain HTML and CSS
+- Plain HTML, CSS, and lightweight JavaScript
 - No dependency-based framework
 - No package installation or build command
 - No custom GitHub Actions workflows
-- No analytics, form processor, database, or payment integration in the initial release
-- GitHub Pages publishes directly from the `main` branch and repository root
-- GoDaddy is used only for domain registration, DNS, and potentially email
+- Google Analytics is used for privacy-respecting site and coarse commercial-CTA measurement
+- No on-site form processor, database, or payment integration
+- Commercial inquiries currently begin through direct email links
+- GitHub `main` is the authoritative website source
+- Production/preview deployment status is integrated with the repository; do not infer a successful deployment from a merge alone
+- GoDaddy is used for domain registration, DNS, and potentially email
 
 See [`SPEND_CONTROL.md`](SPEND_CONTROL.md) for controlling cost and architecture rules.
+
+## Commercial measurement
+
+The current static measurement foundation records only coarse page and CTA context needed to understand commercial pathways. It does not send email body contents, customer-entered decision details, or confidential Decision Object data to analytics. A mailto click is an interaction signal, not an intake submission, qualified opportunity, meeting, engagement, or revenue event.
 
 ## Local review
 
@@ -31,8 +38,8 @@ Then open `http://localhost:8000`.
 
 `contact@negotiatepower.com`
 
-## Legal status
+## Legal and product status
 
-The public name is currently **Negotiate Power**. Do not use “Negotiate Power LLC” until the entity has been formed and the website has been formally updated.
+Negotiate Power operates BRENO through scoped analytical engagements. Public engagement structure and pricing are governed by the current commercial authority in this repository. The website does not accept payment or establish a customer engagement through website access or an initial inquiry alone.
 
-The current site does not accept payment or establish a customer engagement through website access alone.
+Historical Atlas pages and evidence remain preserved as historical provenance. Current customer-facing product language should use BRENO unless a historical reference is intentional.
