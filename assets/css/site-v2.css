@@ -47,26 +47,11 @@ body.nav-open{overflow:hidden}.section-major{padding-block:124px}.section-standa
 /* Progressive enhancement: mobile navigation remains usable without JavaScript. */
 @media(max-width:920px){.nav-toggle{display:none}.site-nav{position:static;display:flex;visibility:visible;opacity:1;pointer-events:auto;transform:none}.site-nav>a[href="/"]{display:flex}body.js-nav .nav-toggle{display:inline-flex}body.js-nav .site-nav{position:absolute;top:100%;left:0;width:100%;visibility:hidden;opacity:0;pointer-events:none;transform:translateY(-8px)}body.js-nav .site-nav.is-open{visibility:visible;opacity:1;pointer-events:auto;transform:none}}
 
-
-/* Mobile navigation regression recovery: constrain the enhanced menu to the viewport and
-   keep page content stationary while it is open. Desktop navigation is unchanged. */
+/* Mobile navigation: one authoritative enhanced-mobile state. The header stays compact;
+   the open drawer occupies the remaining viewport and owns vertical scrolling. */
 @media(max-width:920px){
-  body.js-nav.nav-open{overflow:hidden;overscroll-behavior:none;touch-action:none}
-  body.js-nav .site-header{isolation:isolate}
-  body.js-nav .site-nav{
-    max-height:calc(100dvh - 68px);
-    overflow-y:auto;
-    overscroll-behavior:contain;
-    -webkit-overflow-scrolling:touch;
-  }
-}
-
-
-/* Mobile navigation geometry recovery: detach the open menu from sticky-header document
-   geometry. The compact header remains fixed at the viewport edge; the menu occupies only
-   the remaining viewport and scrolls independently. */
-@media(max-width:920px){
-  body.js-nav .site-header{position:sticky;top:0}
+  body.js-nav.nav-open{overflow:hidden;overscroll-behavior:none}
+  body.js-nav .site-header{position:sticky;top:0;z-index:100;isolation:isolate}
   body.js-nav .site-nav,
   body.js-nav .site-nav.is-open{
     position:fixed;
@@ -75,11 +60,11 @@ body.nav-open{overflow:hidden}.section-major{padding-block:124px}.section-standa
     bottom:0;
     left:0;
     width:auto;
-    height:auto;
     max-height:none;
     margin:0;
     overflow-y:auto;
     overscroll-behavior:contain;
     -webkit-overflow-scrolling:touch;
+    touch-action:pan-y;
   }
 }
