@@ -67,3 +67,30 @@ body.nav-open{overflow:hidden}.section-major{padding-block:124px}.section-standa
     -webkit-overflow-scrolling:touch;
   }
 }
+
+
+/* Native mobile navigation fallback: the menu is closed by default and opens
+   as a content-height popover. This does not depend on navigation.js. */
+@media(max-width:920px){
+  .nav-toggle{display:inline-flex}
+  .site-nav[popover]{
+    position:absolute;
+    inset:auto 0 auto 0;
+    top:68px;
+    width:100%;
+    height:auto;
+    max-height:calc(100dvh - 68px);
+    margin:0;
+    padding:10px max(20px,calc((100vw - min(calc(100vw - 40px),var(--max-width)))/2)) 18px;
+    border:0;
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    background:rgba(8,17,31,.985);
+    box-shadow:0 20px 40px rgba(0,0,0,.24);
+    overflow-y:auto;
+    color:inherit;
+  }
+  .site-nav[popover]:not(:popover-open){display:none}
+  .site-nav[popover]:popover-open{display:flex;visibility:visible;opacity:1;pointer-events:auto;transform:none}
+  body.js-nav .site-nav[popover]:not(.is-open):not(:popover-open){display:none;visibility:hidden}
+}
