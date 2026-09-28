@@ -106,7 +106,7 @@
   toggle.addEventListener('click',()=>{const isOpen=toggle.getAttribute('aria-expanded')==='true';setOpenState(!isOpen);if(!isOpen)activeNav.querySelector('a[href],button')?.focus({preventScroll:true});});
   activeNav.addEventListener('click',event=>{if(event.target.closest('a')&&mobileQuery.matches)close();});
   document.addEventListener('keydown',event=>{if(event.key==='Escape'){closeGroups();if(toggle.getAttribute('aria-expanded')==='true'&&mobileQuery.matches)close(true);return;}const isOpen=toggle.getAttribute('aria-expanded')==='true';if(!isOpen||!mobileQuery.matches||event.key!=='Tab')return;const items=focusable(),first=items[0],last=items[items.length-1];if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}});
-  mobileQuery.addEventListener?.('change',event=>{close();renderNavigation();window.location.reload();});
+  mobileQuery.addEventListener?.('change',()=>{close();renderNavigation();});
   const revealTargets=document.querySelectorAll('.resolution-flow, .decision-state-panel');
   if('IntersectionObserver'in window&&revealTargets.length){const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('is-visible');observer.unobserve(entry.target);}}),{threshold:.28});revealTargets.forEach(target=>observer.observe(target));}else revealTargets.forEach(target=>target.classList.add('is-visible'));
 })();
