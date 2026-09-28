@@ -47,24 +47,23 @@ body.nav-open{overflow:hidden}.section-major{padding-block:124px}.section-standa
 /* Progressive enhancement: mobile navigation remains usable without JavaScript. */
 @media(max-width:920px){.nav-toggle{display:none}.site-nav{position:static;display:flex;visibility:visible;opacity:1;pointer-events:auto;transform:none}.site-nav>a[href="/"]{display:flex}body.js-nav .nav-toggle{display:inline-flex}body.js-nav .site-nav{position:absolute;top:100%;left:0;width:100%;visibility:hidden;opacity:0;pointer-events:none;transform:translateY(-8px)}body.js-nav .site-nav.is-open{visibility:visible;opacity:1;pointer-events:auto;transform:none}}
 
-/* Mobile navigation: one authoritative enhanced-mobile state. The header stays compact;
-   the open drawer occupies the remaining viewport and owns vertical scrolling. */
+/* Mobile regression recovery: use the original compact drop-down geometry.
+   The menu is intentionally content-height rather than a viewport-filling drawer. */
 @media(max-width:920px){
-  body.js-nav.nav-open{overflow:hidden;overscroll-behavior:none}
+  body.js-nav.nav-open{overflow:hidden}
   body.js-nav .site-header{position:sticky;top:0;z-index:100;isolation:isolate}
   body.js-nav .site-nav,
   body.js-nav .site-nav.is-open{
-    position:fixed;
-    top:68px;
-    right:0;
-    bottom:0;
+    position:absolute;
+    top:100%;
+    right:auto;
+    bottom:auto;
     left:0;
-    width:auto;
-    max-height:none;
-    margin:0;
+    width:100%;
+    max-height:calc(100vh - 68px);
+    max-height:calc(100dvh - 68px);
     overflow-y:auto;
     overscroll-behavior:contain;
     -webkit-overflow-scrolling:touch;
-    touch-action:pan-y;
   }
 }
