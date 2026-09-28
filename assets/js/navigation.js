@@ -45,7 +45,6 @@
   };
   renderNavigation()
 
-  if (nav && !isHistorical) nav.innerHTML = currentNav;
 
   /* Current BRENO vocabulary. Atlas and Decision Room are preserved historical records. */
   if (!isHistorical) {
