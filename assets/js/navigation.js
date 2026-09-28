@@ -81,7 +81,10 @@
   groups.forEach(group=>{const trigger=group.querySelector('.nav-group-trigger');trigger?.addEventListener('click',event=>{event.stopPropagation();const opening=!group.classList.contains('is-open');closeGroups(group);group.classList.toggle('is-open',opening);trigger.setAttribute('aria-expanded',String(opening));});});
   document.addEventListener('click',event=>{if(!event.target.closest('.nav-group'))closeGroups();});
   const focusable=()=>[toggle,...activeNav.querySelectorAll('a[href],button')].filter(element=>!element.hasAttribute('disabled'));
-  const setOpenState=open=>{toggle.setAttribute('aria-expanded',String(open));activeNav.classList.toggle('is-open',open);document.body.classList.toggle('nav-open',open&&mobileQuery.matches);if(!open)closeGroups();};
+  let lockedScrollY=0;
+  const lockPage=()=>{lockedScrollY=window.scrollY;document.body.style.position='fixed';document.body.style.top=`-${lockedScrollY}px`;document.body.style.width='100%';};
+  const unlockPage=()=>{const restoreY=lockedScrollY;document.body.style.position='';document.body.style.top='';document.body.style.width='';window.scrollTo(0,restoreY);};
+  const setOpenState=open=>{const shouldLock=open&&mobileQuery.matches;const wasLocked=document.body.classList.contains('nav-open');toggle.setAttribute('aria-expanded',String(open));activeNav.classList.toggle('is-open',open);document.body.classList.toggle('nav-open',shouldLock);if(shouldLock&&!wasLocked)lockPage();else if(!shouldLock&&wasLocked)unlockPage();if(!open)closeGroups();};
   const close=(restoreFocus=false)=>{setOpenState(false);if(restoreFocus)toggle.focus();};
   toggle.addEventListener('click',()=>{const isOpen=toggle.getAttribute('aria-expanded')==='true';setOpenState(!isOpen);if(!isOpen)activeNav.querySelector('a[href],button')?.focus({preventScroll:true});});
   activeNav.addEventListener('click',event=>{if(event.target.closest('a')&&mobileQuery.matches)close();});
