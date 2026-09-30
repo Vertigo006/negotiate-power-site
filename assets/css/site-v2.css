@@ -94,3 +94,24 @@ body.nav-open{overflow:hidden}.section-major{padding-block:124px}.section-standa
   .site-nav[popover]:popover-open{display:flex;visibility:visible;opacity:1;pointer-events:auto;transform:none}
   body.js-nav .site-nav[popover]:not(.is-open):not(:popover-open){display:none;visibility:hidden}
 }
+
+
+/* Tablet/desktop reset: the native popover behavior is mobile-only.
+   Safari applies UA popover surface colors to the nav element even when the
+   desktop navigation is rendered inline, producing a white navigation panel. */
+@media(min-width:921px){
+  .site-nav[popover]{
+    position:static;
+    inset:auto;
+    width:auto;
+    height:auto;
+    max-height:none;
+    margin:0;
+    padding:0;
+    border:0;
+    background:transparent;
+    box-shadow:none;
+    color:inherit;
+    overflow:visible;
+  }
+}
