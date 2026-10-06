@@ -7,6 +7,7 @@
 
   const desktopNav = `
     <a class="nav-direct" href="/breno.html">BRENO</a>
+    <a class="nav-direct" href="/explore.html">Explore</a>
     <a class="nav-direct" href="/how-it-works.html">How It Works</a>
     <div class="nav-group">
       <button class="nav-group-trigger" type="button" aria-expanded="false">Solutions <span aria-hidden="true">⌄</span></button>
@@ -32,6 +33,7 @@
      a tall nested drawer on phones/tablets. */
   const mobileNav = `
     <a class="nav-direct" href="/breno.html">BRENO</a>
+    <a class="nav-direct" href="/explore.html">Explore</a>
     <a class="nav-direct" href="/how-it-works.html">How It Works</a>
     <a class="nav-direct" href="/aircraft-acquisition.html">Aircraft Acquisition</a>
     <a class="nav-direct" href="/intelligence.html">Insights</a>
