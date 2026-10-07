@@ -27,24 +27,13 @@
     <a class="nav-direct nav-login" href="https://app.negotiatepower.com/sign-in" rel="nofollow">Login</a>
     <a class="nav-cta" href="mailto:contact@negotiatepower.com?subject=Bring%20a%20Decision">Bring a Decision</a>`;
 
-  /* Mobile deliberately uses the proven compact, flat navigation model. Keep the
-     richer grouped information architecture on desktop without expanding it into
-     a tall nested drawer on phones/tablets. */
-  const mobileNav = `
-    <a class="nav-direct" href="/breno.html">BRENO</a>
-    <a class="nav-direct" href="/explore.html">Explore</a>
-    <a class="nav-direct" href="/how-it-works.html">How It Works</a>
-    <a class="nav-direct" href="/aircraft-acquisition.html">Aircraft Acquisition</a>
-    <a class="nav-direct" href="/intelligence.html">Insights</a>
-    <a class="nav-direct" href="/pricing.html">Pricing</a>
-    <a class="nav-direct nav-login" href="https://app.negotiatepower.com/sign-in" rel="nofollow">Login</a>
-    <a class="nav-cta" href="mailto:contact@negotiatepower.com?subject=Bring%20a%20Decision">Bring a Decision</a>`;
+  // Keep the same controls and handlers across responsive breakpoint changes.
   const mobileQuery = window.matchMedia('(max-width: 920px)');
   const renderNavigation = () => {
     if (!nav || isHistorical) return;
-    nav.innerHTML = mobileQuery.matches ? mobileNav : desktopNav;
+    nav.innerHTML = desktopNav;
   };
-  renderNavigation()
+  renderNavigation();
 
 
   /* Current BRENO vocabulary. Atlas and Decision Room are preserved historical records. */
@@ -74,7 +63,7 @@
 
   /* Stage 0 commercial measurement: record only page/CTA context, never email body or Decision Object data. */
   const measurementPath = path === '/index.html' ? '/' : path;
-  const pageContext = document.body.dataset.decisionCategory || (isIntelligenceArticle ? 'aviation_insight' : (measurementPath === '/aircraft-acquisition.html' ? 'aircraft_acquisition' : (measurementPath === '/' ? 'homepage' : measurementPath.replace(/^\\/|\\.html$/g,'').replaceAll('/','_') || 'homepage')));
+  const pageContext = document.body.dataset.decisionCategory || (isIntelligenceArticle ? 'aviation_insight' : (measurementPath === '/aircraft-acquisition.html' ? 'aircraft_acquisition' : (measurementPath === '/' ? 'homepage' : measurementPath.replace(/^\/|\.html$/g,'').replaceAll('/','_') || 'homepage')));
   const classifyCta = link => {
     if (link.matches('.nav-cta')) return 'primary_nav';
     if (/organizational/i.test(link.textContent || '')) return 'organizational_use';
@@ -90,6 +79,9 @@
   });
 
   const toggle=document.querySelector('.nav-toggle'); const activeNav=document.querySelector('#primary-navigation'); if(!toggle||!activeNav)return;
+  // Native popover is the no-JS fallback; enhanced navigation has one state owner.
+  activeNav.removeAttribute('popover');
+  toggle.removeAttribute('popovertarget');
   const normalizePath=value=>{if(!value)return'/';const url=new URL(value,window.location.origin);return url.pathname==='/index.html'?'/':url.pathname;};
   const currentPath=normalizePath(path); const activePath=currentPath.startsWith('/intelligence/')?'/intelligence.html':currentPath;
   [...activeNav.querySelectorAll('a')].forEach(link=>{if(link.protocol==='mailto:')return;const linkPath=normalizePath(link.getAttribute('href'));if(linkPath===activePath){link.setAttribute('aria-current','page');link.closest('.nav-group')?.querySelector('.nav-group-trigger')?.classList.add('has-current');}else link.removeAttribute('aria-current');});
@@ -106,7 +98,7 @@
   toggle.addEventListener('click',()=>{const isOpen=toggle.getAttribute('aria-expanded')==='true';setOpenState(!isOpen);if(!isOpen)activeNav.querySelector('a[href],button')?.focus({preventScroll:true});});
   activeNav.addEventListener('click',event=>{if(event.target.closest('a')&&mobileQuery.matches)close();});
   document.addEventListener('keydown',event=>{if(event.key==='Escape'){closeGroups();if(toggle.getAttribute('aria-expanded')==='true'&&mobileQuery.matches)close(true);return;}const isOpen=toggle.getAttribute('aria-expanded')==='true';if(!isOpen||!mobileQuery.matches||event.key!=='Tab')return;const items=focusable(),first=items[0],last=items[items.length-1];if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}});
-  mobileQuery.addEventListener?.('change',()=>{close();renderNavigation();});
+  mobileQuery.addEventListener?.('change',()=>{close();});
   const revealTargets=document.querySelectorAll('.resolution-flow, .decision-state-panel');
   if('IntersectionObserver'in window&&revealTargets.length){const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('is-visible');observer.unobserve(entry.target);}}),{threshold:.28});revealTargets.forEach(target=>observer.observe(target));}else revealTargets.forEach(target=>target.classList.add('is-visible'));
 })();

@@ -131,6 +131,6 @@ body.nav-open{overflow:hidden}.section-major{padding-block:124px}.section-standa
 .nav-group-trigger{display:inline-flex;align-items:center;gap:6px;padding:0;border:0;color:#dce2e8;background:transparent;font:inherit;font-size:.84rem;font-weight:650;letter-spacing:.035em;cursor:pointer}
 .nav-group-trigger:hover,.nav-group-trigger:focus-visible,.nav-group-trigger.has-current,.nav-group.is-open>.nav-group-trigger{color:var(--gold)}
 .nav-group>.nav-submenu{display:none}
-.nav-group.is-open>.nav-submenu{display:block}
+.nav-group.is-open>.nav-submenu,.nav-group[open]>.nav-submenu{display:block}
 .nav-submenu-right{right:-16px;left:auto}
 @media(max-width:920px){.nav-group-trigger{display:flex;width:100%;min-height:48px;justify-content:space-between;padding:10px 4px;border-bottom:1px solid rgba(255,255,255,.07)}.nav-group.is-open>.nav-submenu{display:block}}
