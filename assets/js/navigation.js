@@ -6,22 +6,21 @@
   const isIntelligenceArticle = path.startsWith('/intelligence/');
 
   const desktopNav = `
-    <a class="nav-direct" href="/breno.html">BRENO</a>
-    <a class="nav-direct" href="/explore.html">Explore</a>
-    <a class="nav-direct" href="/how-it-works.html">How It Works</a>
     <div class="nav-group">
-      <button class="nav-group-trigger" type="button" aria-expanded="false">Solutions <span aria-hidden="true">⌄</span></button>
+      <button class="nav-group-trigger" type="button" aria-expanded="false">BRENO <span aria-hidden="true">⌄</span></button>
       <div class="nav-submenu">
-        <a href="/aircraft-acquisition.html"><strong>Aircraft Acquisition</strong><small>Pressure-test ownership, candidate, timing, and alternatives.</small></a>
-        <a href="/aviation-advisers.html"><strong>For Aviation Professionals</strong><small>Add decision intelligence without displacing specialist authority.</small></a>
+        <a href="/breno.html">What is BRENO</a>
+        <a href="/how-it-works.html">How It Works</a>
+        <a href="/methodology.html">Methodology &amp; Trust</a>
+        <a href="/example.html">Example</a>
       </div>
     </div>
+    <a class="nav-direct" href="/explore.html">Explore</a>
     <div class="nav-group">
       <button class="nav-group-trigger" type="button" aria-expanded="false">Insights <span aria-hidden="true">⌄</span></button>
       <div class="nav-submenu nav-submenu-right">
-        <a href="/intelligence.html"><strong>Aviation Insights</strong><small>Public decision guides and due-diligence frameworks.</small></a>
-        <a href="/samples.html"><strong>Decision Examples</strong><small>See confirm, condition, and change patterns.</small></a>
-        <a href="/methodology.html"><strong>Evidence & Methodology</strong><small>Inspect evidence discipline, boundaries, and provenance.</small></a>
+        <a href="/intelligence.html">All Insights</a>
+        <a href="/aircraft-acquisition.html">Aircraft Acquisition</a>
       </div>
     </div>
     <a class="nav-direct" href="/pricing.html">Pricing</a>

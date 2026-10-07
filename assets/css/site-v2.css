@@ -126,3 +126,11 @@ body.nav-open{overflow:hidden}.section-major{padding-block:124px}.section-standa
 .nav-submenu{position:absolute;z-index:20;top:calc(100% + 14px);left:-16px;min-width:210px;padding:8px;border:1px solid var(--line);border-radius:6px;background:#0b1625;box-shadow:0 18px 36px rgba(0,0,0,.28)}
 .nav-submenu a{display:block;padding:10px 12px;white-space:nowrap}
 @media(max-width:920px){.nav-group{display:block}.nav-group>summary{display:flex;min-height:48px;align-items:center;justify-content:space-between;padding:10px 4px;border-bottom:1px solid rgba(255,255,255,.07)}.nav-submenu{position:static;min-width:0;padding:0 0 4px 14px;border:0;border-radius:0;background:transparent;box-shadow:none}.site-nav .nav-submenu a,.site-nav .nav-submenu a:not(.nav-cta){min-height:44px;padding:8px 4px;color:#bfc8d2}}
+
+/* Stage 2 renderer behavior: explicit open/closed state for JS-injected dropdowns. */
+.nav-group-trigger{display:inline-flex;align-items:center;gap:6px;padding:0;border:0;color:#dce2e8;background:transparent;font:inherit;font-size:.84rem;font-weight:650;letter-spacing:.035em;cursor:pointer}
+.nav-group-trigger:hover,.nav-group-trigger:focus-visible,.nav-group-trigger.has-current,.nav-group.is-open>.nav-group-trigger{color:var(--gold)}
+.nav-group>.nav-submenu{display:none}
+.nav-group.is-open>.nav-submenu{display:block}
+.nav-submenu-right{right:-16px;left:auto}
+@media(max-width:920px){.nav-group-trigger{display:flex;width:100%;min-height:48px;justify-content:space-between;padding:10px 4px;border-bottom:1px solid rgba(255,255,255,.07)}.nav-group.is-open>.nav-submenu{display:block}}
