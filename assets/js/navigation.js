@@ -15,7 +15,7 @@
         <a href="/example.html">Example</a>
       </div>
     </div>
-    <a class="nav-direct" href="/explore.html">Explore</a>
+    <a class="nav-direct nav-explore" href="/explore.html" aria-label="Explore BRENO">Explore BRENO</a>
     <div class="nav-group">
       <button class="nav-group-trigger" type="button" aria-expanded="false">Insights <span aria-hidden="true">⌄</span></button>
       <div class="nav-submenu nav-submenu-right">
