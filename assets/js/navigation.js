@@ -25,7 +25,7 @@
     </div>
     <a class="nav-direct" href="/pricing.html">Pricing</a>
     <a class="nav-direct nav-login" href="https://app.negotiatepower.com/sign-in" rel="nofollow">Login</a>
-    <a class="nav-cta" href="mailto:contact@negotiatepower.com?subject=Bring%20a%20Decision">Bring a Decision</a>`;
+    <a class="nav-cta" href="/decision-fit.html">Discuss Your Decision</a>`;
 
   // Keep the same controls and handlers across responsive breakpoint changes.
   const mobileQuery = window.matchMedia('(max-width: 920px)');
