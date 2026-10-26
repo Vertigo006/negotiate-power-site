@@ -7,12 +7,11 @@
 
   const desktopNav = `
     <div class="nav-group">
-      <button class="nav-group-trigger" type="button" aria-expanded="false">BRENO <span aria-hidden="true">⌄</span></button>
+      <button class="nav-group-trigger" type="button" aria-expanded="false">About BRENO <span aria-hidden="true">⌄</span></button>
       <div class="nav-submenu">
         <a href="/breno.html">What is BRENO</a>
         <a href="/how-it-works.html">How It Works</a>
         <a href="/methodology.html">Methodology &amp; Trust</a>
-        <a href="/example.html">Example</a>
       </div>
     </div>
     <a class="nav-direct nav-explore" href="/explore.html" aria-label="Explore BRENO">Explore BRENO</a>
