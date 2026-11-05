@@ -53,7 +53,7 @@
   }
 
   if (isIntelligenceArticle) {
-    document.querySelectorAll('a[href="/decision-room.html"]').forEach(link=>{link.href='/example.html';if(/decision room/i.test(link.textContent))link.textContent='See a BRENO example';});
+    document.querySelectorAll('a[href="/decision-room.html"]').forEach(link=>{link.href='/explore.html';if(/decision room/i.test(link.textContent))link.textContent='Explore BRENO';});
     document.querySelectorAll('a[href="/engagements.html"]').forEach(link=>{link.href='/pricing.html';if(/decision brief|decision intelligence|pricing|engagement/i.test(link.textContent))link.textContent='BRENO pricing and scope';});
     document.querySelectorAll('a[href="/atlas.html"]').forEach(link=>{link.href='/methodology.html';if(/atlas|forward cost|evidence traceability/i.test(link.textContent))link.textContent='BRENO evidence and methodology';});
     document.querySelectorAll('a[href^="mailto:"]').forEach(link=>{const href=link.getAttribute('href')||'';link.setAttribute('href',href.replace(/Bring%20Atlas%20a%20Decision/gi,'Bring%20a%20Decision').replace(/Atlas/gi,'BRENO'));if(/bring atlas a decision/i.test(link.textContent))link.textContent='Bring a Decision';});
