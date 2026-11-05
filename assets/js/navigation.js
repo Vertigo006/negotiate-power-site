@@ -19,6 +19,7 @@
       <button class="nav-group-trigger" type="button" aria-expanded="false">Insights <span aria-hidden="true">⌄</span></button>
       <div class="nav-submenu nav-submenu-right">
         <a href="/intelligence.html">All Insights</a>
+        <a href="/decision-guides.html">Decision Guides</a>
         <a href="/aircraft-acquisition.html">Aircraft Acquisition</a>
       </div>
     </div>
