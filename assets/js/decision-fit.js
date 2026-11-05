@@ -3,61 +3,100 @@
   const status = document.querySelector('#decision-fit-status');
   if (!form) return;
 
+  const endpoint = 'https://nnwpvqymwjhkrfzzeypm.supabase.co/functions/v1/decision-fit-submit';
+  const startedAt = Date.now();
+
   const setStatus = (message, state='') => {
     if (!status) return;
     status.textContent = message;
     status.dataset.state = state;
   };
 
-  form.addEventListener('submit', event => {
-    event.preventDefault();
-    const data = new FormData(form);
-    const decision = (data.get('decision') || '').toString().trim();
-    const timing = (data.get('timing') || '').toString().trim();
-    const stakes = (data.get('stakes') || '').toString().trim();
-    const name = (data.get('name') || '').toString().trim();
-    const organization = (data.get('organization') || '').toString().trim();
-    const email = (data.get('email') || '').toString().trim();
-
-    if (!decision || !timing || !stakes || !name || !email) {
-      setStatus('Please complete the required fields before continuing.', 'error');
-      form.reportValidity();
-      return;
-    }
-
+  const buildMailto = data => {
     const subject = 'BRENO Decision Fit Request';
     const body = [
       'Decision in one sentence:',
-      decision,
+      data.decision,
       '',
       'Approximate decision timing:',
-      timing,
+      data.timing,
       '',
       'What is at stake (broadly):',
-      stakes,
+      data.stakes,
       '',
       'Name:',
-      name,
+      data.name,
       '',
       'Organization:',
-      organization || 'Not provided',
+      data.organization || 'Not provided',
       '',
       'Reply email:',
-      email,
+      data.email,
       '',
       'Submitted from the BRENO Decision Fit page.'
     ].join('\n');
+    return 'mailto:contact@negotiatepower.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+  };
 
-    const href = 'mailto:contact@negotiatepower.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-    setStatus('Your decision summary is ready. Your email application will open next; review the message and send when ready.', 'ready');
+  form.addEventListener('submit', async event => {
+    event.preventDefault();
 
-    if (typeof window.gtag === 'function') {
-      window.gtag('event', 'decision_fit_prepare', {
-        originating_path: window.location.pathname,
-        transport: 'email_handoff'
-      });
+    if (!form.reportValidity()) return;
+
+    const fd = new FormData(form);
+    const payload = {
+      decision: (fd.get('decision') || '').toString().trim(),
+      timing: (fd.get('timing') || '').toString().trim(),
+      stakes: (fd.get('stakes') || '').toString().trim(),
+      name: (fd.get('name') || '').toString().trim(),
+      organization: (fd.get('organization') || '').toString().trim(),
+      email: (fd.get('email') || '').toString().trim(),
+      website: (fd.get('website') || '').toString().trim(),
+      startedAt
+    };
+
+    const submit = form.querySelector('button[type="submit"]');
+    if (submit) {
+      submit.disabled = true;
+      submit.textContent = 'Sending…';
     }
+    setStatus('Sending your decision summary securely…', 'sending');
 
-    window.location.href = href;
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) throw new Error('delivery_failed');
+
+      const result = await response.json().catch(() => ({}));
+      if (!result.ok) throw new Error('delivery_failed');
+
+      setStatus('Received. Negotiate Power will review the decision fit and reply to the email you provided.', 'ready');
+      form.reset();
+
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'decision_fit_submit', {
+          originating_path: window.location.pathname,
+          transport: 'edge_function'
+        });
+      }
+    } catch {
+      setStatus('Direct delivery is temporarily unavailable. Your information has not been lost; opening a prepared email instead.', 'error');
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'decision_fit_fallback', {
+          originating_path: window.location.pathname,
+          transport: 'email_handoff'
+        });
+      }
+      window.setTimeout(() => { window.location.href = buildMailto(payload); }, 450);
+    } finally {
+      if (submit) {
+        submit.disabled = false;
+        submit.textContent = 'Submit Decision Fit Request';
+      }
+    }
   });
 })();
