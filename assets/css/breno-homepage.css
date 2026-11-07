@@ -63,6 +63,7 @@
 /* Decision Fit guided request */
 .breno-preview .decision-fit-layout{align-items:start}
 .breno-preview .decision-fit-intro{max-width:34rem;color:#4f5d6b;line-height:1.7}
+.breno-preview .decision-fit-context{margin:1rem 0 0;padding:.85rem 1rem;border-left:3px solid #cfaa69;background:rgba(207,164,91,.09);color:#344254;font-size:.9rem;line-height:1.55}
 .breno-preview .decision-fit-notes{display:flex;flex-wrap:wrap;gap:.55rem 1rem;margin:1.25rem 0 0;padding:0;list-style:none;color:#5e6b78;font-size:.82rem;font-weight:750;letter-spacing:.04em;text-transform:uppercase}
 .breno-preview .decision-fit-form{display:grid;gap:1rem;padding:clamp(1.2rem,3vw,2rem);border:1px solid rgba(8,17,31,.12);border-radius:14px;background:#fff;box-shadow:0 24px 60px rgba(8,17,31,.08)}
 .breno-preview .decision-fit-form label{display:grid;gap:.45rem;color:#152234;font-size:.88rem;font-weight:800}
