@@ -6,6 +6,29 @@
   const endpoint = 'https://nnwpvqymwjhkrfzzeypm.supabase.co/functions/v1/decision-fit-submit';
   const startedAt = Date.now();
 
+  const guideMap = {
+    'should-we-buy-an-aircraft': {label:'Aircraft acquisition', prompt:'What specifically are you trying to decide about acquiring an aircraft?'},
+    'do-we-need-another-aircraft': {label:'Fleet capacity', prompt:'What specifically are you trying to decide about adding aircraft capacity?'},
+    'charter-fractional-or-ownership': {label:'Aircraft access model', prompt:'What specifically are you trying to decide about charter, fractional access, or ownership?'},
+    'should-we-change-aircraft-management-companies': {label:'Aircraft management', prompt:'What specifically are you trying to decide about changing aircraft management companies?'},
+    'should-we-delay-an-aircraft-purchase': {label:'Aircraft purchase timing', prompt:'What specifically are you trying to decide about whether to delay the aircraft purchase?'},
+    'should-we-replace-our-aircraft': {label:'Aircraft replacement', prompt:'What specifically are you trying to decide about replacing the current aircraft?'},
+    'should-we-put-our-aircraft-on-charter': {label:'Aircraft charter participation', prompt:'What specifically are you trying to decide about placing the aircraft on charter?'},
+    'should-we-outsource-our-flight-department': {label:'Flight department operating model', prompt:'What specifically are you trying to decide about outsourcing the flight department?'},
+    'should-we-buy-this-aircraft-or-walk-away': {label:'Aircraft transaction diligence', prompt:'What specifically are you trying to decide about proceeding with this aircraft transaction?'}
+  };
+  const guideKey = new URLSearchParams(window.location.search).get('guide') || '';
+  const guideContext = guideMap[guideKey] || null;
+  const contextEl = document.querySelector('#decision-fit-context');
+  const decisionField = form.querySelector('[name="decision"]');
+  if (guideContext) {
+    if (contextEl) {
+      contextEl.hidden = false;
+      contextEl.textContent = 'You came from our ' + guideContext.label + ' decision guide. We carried that context forward so you do not have to start over.';
+    }
+    if (decisionField) decisionField.placeholder = guideContext.prompt;
+  }
+
   const setStatus = (message, state='') => {
     if (!status) return;
     status.textContent = message;
@@ -45,7 +68,9 @@
 
     const fd = new FormData(form);
     const payload = {
-      decision: (fd.get('decision') || '').toString().trim(),
+      decision: guideContext
+        ? '[' + guideContext.label + '] ' + (fd.get('decision') || '').toString().trim()
+        : (fd.get('decision') || '').toString().trim(),
       timing: (fd.get('timing') || '').toString().trim(),
       stakes: (fd.get('stakes') || '').toString().trim(),
       name: (fd.get('name') || '').toString().trim(),
@@ -80,6 +105,7 @@
       if (typeof window.gtag === 'function') {
         window.gtag('event', 'decision_fit_submit', {
           originating_path: window.location.pathname,
+          decision_context: guideKey || 'direct',
           transport: 'edge_function'
         });
       }
@@ -88,6 +114,7 @@
       if (typeof window.gtag === 'function') {
         window.gtag('event', 'decision_fit_fallback', {
           originating_path: window.location.pathname,
+          decision_context: guideKey || 'direct',
           transport: 'email_handoff'
         });
       }
