@@ -38,6 +38,9 @@
   const buildMailto = data => {
     const subject = 'BRENO Decision Fit Request';
     const body = [
+      'Decision context:',
+      data.context || 'Direct inquiry',
+      '',
       'Decision in one sentence:',
       data.decision,
       '',
@@ -68,9 +71,8 @@
 
     const fd = new FormData(form);
     const payload = {
-      decision: guideContext
-        ? '[' + guideContext.label + '] ' + (fd.get('decision') || '').toString().trim()
-        : (fd.get('decision') || '').toString().trim(),
+      decision: (fd.get('decision') || '').toString().trim(),
+      context: guideContext ? guideContext.label : '',
       timing: (fd.get('timing') || '').toString().trim(),
       stakes: (fd.get('stakes') || '').toString().trim(),
       name: (fd.get('name') || '').toString().trim(),
